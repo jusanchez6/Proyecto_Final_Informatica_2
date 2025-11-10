@@ -14,6 +14,7 @@
 
 #include <Player.hpp>
 #include <DogAgent.hpp>
+#include <Physics.hpp>
 
 class Level1Scene : public QGraphicsScene {
     Q_OBJECT
