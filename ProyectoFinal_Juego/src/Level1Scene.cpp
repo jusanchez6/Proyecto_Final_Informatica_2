@@ -51,10 +51,26 @@ void Level1Scene::keyPressEvent(QKeyEvent *event) {
 void Level1Scene::updateScene() {
     static float t = 0;
     t += 0.1f;
-    smoke->setY(150 + std::sin(t) * 10);
-    dog->perceive(fires, player->pos());
-    dog->update(0.16f);
 
+    // 🌫️ Física 1: movimiento oscilatorio del humo
+    QPointF smokeOrigin(400, 150);
+    QPointF newPos = Physics::oscillatory(t, 10.0f, 2.0f, smokeOrigin);
+    smoke->setPos(newPos);
+
+    // 🔥 Física 2: vibración leve del fuego
+    for (auto *fire : fires) {
+        QPointF origin = fire->pos();
+        QPointF drifted = Physics::randomDrift(t, 0.5f, origin);
+        fire->setPos(drifted);
+    }
+
+    // 🐕 Física 3: movimiento inercial del perro (con su IA)
+    dog->perceive(fires, player->pos());
+    QPointF newDogPos = Physics::dampedFollow(dog->pos(), dog->pos() + (dog->pos() - player->pos()) * -1, 0.05f);
+    dog->setPos(newDogPos);
+    dog->update(0.016f);
+
+    // 🔍 Colisiones
     for (auto *fire : fires) {
         if (player->collidesWithItem(fire)) {
             qDebug() << "🔥 Tocado por el fuego, pierdes 1 segundo.";

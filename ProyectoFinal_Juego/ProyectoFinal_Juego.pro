@@ -9,14 +9,16 @@ SOURCES += \
     src/GameObject.cpp \
     src/Level1Scene.cpp \
     src/Player.cpp \
-    src/DogAgent.cpp
+    src/DogAgent.cpp \
+    src/Physics.cpp
 
 HEADERS += \
     include/GameObject.hpp \
     include/Level1Scene.hpp \
     include/Player.hpp \
-    include/DogAgent.hpp
-    
+    include/DogAgent.hpp \
+    include/Physics.cpp
+
 RESOURCES += resources.qrc
 
 INCLUDEPATH += include
