@@ -10,13 +10,14 @@
 #include <QRandomGenerator>
 #include <QDebug>
 #include <cmath>
-
+#include <QtMath>
 
 #include <Player.hpp>
 #include <DogAgent.hpp>
 #include <Physics.hpp>
 
-class Level1Scene : public QGraphicsScene {
+class Level1Scene : public QGraphicsScene
+{
     Q_OBJECT
 public:
     explicit Level1Scene(QObject *parent = nullptr);
@@ -30,13 +31,15 @@ private:
     Player *player;
     DogAgent *dog;
     QGraphicsPixmapItem *refuge;
-    QList<QGraphicsPixmapItem*> fires;
+    QList<QGraphicsPixmapItem *> fires;
     QGraphicsPixmapItem *smoke;
     QGraphicsTextItem *timerText;
     QTimer gameLoop;
     QTimer countdown;
     int timeLeft;
-};
 
+signals:
+    void levelCompleted();
+};
 
 #endif

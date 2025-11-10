@@ -81,6 +81,7 @@ void Level1Scene::updateScene() {
     if (player->collidesWithItem(refuge)) {
         qDebug() << "✅ Has llegado al refugio.";
         timerText->setPlainText("¡Has llegado al refugio!");
+        emit levelCompleted();
         gameLoop.stop();
         countdown.stop();
     }

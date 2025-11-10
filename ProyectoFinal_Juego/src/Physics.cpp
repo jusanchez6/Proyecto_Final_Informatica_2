@@ -23,3 +23,10 @@ QPointF Physics::dampedFollow(const QPointF &current, const QPointF &target, flo
     QPointF delta = target - current;
     return current + delta * damping;
 }
+
+QPointF Physics::projectile(float t, const QPointF& start, float v0, float g) {
+    // Movimiento vertical con aceleración constante (gravedad)
+    float y = start.y() + v0 * t + 0.5f * g * t * t;
+    return QPointF(start.x(), y);
+}
+

@@ -12,6 +12,8 @@ public:
     static QPointF oscillatory(float t, float amplitude, float freq, const QPointF& origin);
     static QPointF randomDrift(float t, float intensity, const QPointF& origin);
     static QPointF dampedFollow(const QPointF& current, const QPointF& target, float damping);
+    static QPointF projectile(float t, const QPointF& start, float v0, float g);
+
 };
 
 
