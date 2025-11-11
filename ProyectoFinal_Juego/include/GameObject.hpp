@@ -1,12 +1,14 @@
 #ifndef GAMEOBJECT_HPP
 #define GAMEOBJECT_HPP
+
+#include <QObject>
 #include <QGraphicsPixmapItem>
 
-class GameObject : public QGraphicsPixmapItem {
+class GameObject : public QObject, public QGraphicsPixmapItem {
+    Q_OBJECT  
 public:
-    GameObject(const QPixmap &pixmap);
+    explicit GameObject(const QPixmap &pixmap, QObject *parent = nullptr);
     virtual void update(float dt) {}
-    virtual ~GameObject() = default;
 };
 
 #endif

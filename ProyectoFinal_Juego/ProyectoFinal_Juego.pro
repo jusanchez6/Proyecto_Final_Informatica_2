@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,14 +10,22 @@ SOURCES += \
     src/Level1Scene.cpp \
     src/Player.cpp \
     src/DogAgent.cpp \
-    src/Physics.cpp
+    src/Physics.cpp \
+    src/Level2Scene.cpp \
+    src/Level3Scene.cpp \ 
+    src/Plane.cpp \
+    src/AnimatedSprite.cpp
 
 HEADERS += \
     include/GameObject.hpp \
     include/Level1Scene.hpp \
     include/Player.hpp \
     include/DogAgent.hpp \
-    include/Physics.cpp
+    include/Physics.hpp \
+    include/Level2Scene.hpp \
+    include/Level3Scene.hpp \ 
+    include/Plane.hpp \
+    include/AnimatedSprite.hpp
 
 RESOURCES += resources.qrc
 

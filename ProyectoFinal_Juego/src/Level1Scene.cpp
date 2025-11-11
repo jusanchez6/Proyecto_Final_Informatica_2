@@ -1,31 +1,101 @@
 #include <Level1Scene.hpp>
-
+#include <QGraphicsView>
+#include <QDebug>
 
 Level1Scene::Level1Scene(QObject *parent)
-    : QGraphicsScene(parent), timeLeft(30)
+    : QGraphicsScene(parent), timeLeft(100)
 {
-    setSceneRect(0, 0, 800, 600);
+
+    setSceneRect(0, 0, 736, 841);
+
+    QPixmap bg("../assets/backgrounds/Bg_level1.jpg");
+
+    if (!bg.isNull())
+    {
+        QGraphicsPixmapItem *background = addPixmap(bg.scaled(736, 841));
+        background->setZValue(-100);
+    }
+    else
+    {
+        qWarning() << "No se pudo cargar el fondo.";
+    }
+
+    QList<QRectF> blockedZones = {
+        QRectF(104, 5, 228, 57),
+        QRectF(321, 102, 92, 60),
+        QRectF(550, 13, 54, 43),
+        QRectF(635, 49, 69, 73),
+        QRectF(434, 228, 46, 56),
+        QRectF(470, 315, 34, 79),
+        QRectF(686, 233, 18, 86),
+        QRectF(12, 245, 169, 60),
+        QRectF(214, 309, 25, 62),
+        QRectF(270, 343, 46, 40),
+        QRectF(261, 458, 68, 60),
+        QRectF(174, 524, 218, 41),
+        QRectF(211, 592, 86, 20),
+        QRectF(435, 741, 73, 52),
+        QRectF(673, 478, 41, 155),
+        QRectF(2, 672, 87, 143),
+        QRectF(2, 6, 23, 233),
+        QRectF(8, 344, 29, 317)};
+
+    // Guarda estos rectángulos en una lista global
+    for (const QRectF &r : blockedZones)
+    {
+        QGraphicsRectItem *block = addRect(r, QPen(Qt::NoPen), QBrush(Qt::transparent));
+        block->setData(0, "blocked"); // marcador para detección
+        block->setZValue(5);
+        colliders.append(block);
+    }
 
     // Jugador
     player = new Player();
     addItem(player);
-    player->setPos(50, 300);
-
+    player->setPos(79, 130);
+    player->setFlag(QGraphicsItem::ItemIsFocusable);
+    player->setFocus();
 
     dog = new DogAgent();
     addItem(dog);
-
-    // Refugio
-    refuge = addPixmap(QPixmap("../assets/sprites/Level1_debris.png").scaled(48, 48));
-    refuge->setPos(700, 280);
+    dog->setPos(200, 400);
 
     // Obstáculos de fuego
-    for (int i = 0; i < 5; ++i) {
-        auto *fire = addPixmap(QPixmap("../assets/sprites/Level1_fire.png").scaled(32, 32));
-        fire->setPos(QRandomGenerator::global()->bounded(150, 700),
-                     QRandomGenerator::global()->bounded(100, 500));
+    QList<QPointF> firePositions = {
+        // QPointF(67, 431),
+        QPointF(412, 43),
+        QPointF(479, 130),
+        QPointF(531, 196),
+        QPointF(615, 412),
+        QPointF(490, 554),
+        QPointF(164, 761)};
+
+    for (const QPointF &pos : firePositions)
+    {
+        AnimatedSprite *fire = new AnimatedSprite("../assets/sprites/Level_fire.png", 4, 4);
+        fire->setAnimationRow(0);
+        fire->setScale(1.5);
+        fire->start(270);
+        fire->setPos(pos);
+
+        addItem(fire);
         fires.append(fire);
     }
+
+    // Refugio
+    QList<QRectF> refugePositions = {
+        QRectF(401, 14, 60, 49),
+        QRectF(70, 435, 75, 27),
+        QRectF(666, 783, 64, 56)};
+
+    // Selecciona un refugio aleatorio
+    int randomIndex = QRandomGenerator::global()->bounded(refugePositions.size());
+    QRectF chosenArea = refugePositions[randomIndex];
+
+    // Crea un rectángulo negro como refugio
+    refuge = addRect(chosenArea, QPen(Qt::NoPen), QBrush(Qt::black));
+    refuge->setZValue(5);
+
 
     // Humo oscilante
     smoke = addPixmap(QPixmap("../assets/sprites/Level1_fire.png").scaled(32, 32));
@@ -37,18 +107,34 @@ Level1Scene::Level1Scene(QObject *parent)
     timerText->setPos(10, 10);
     timerText->setDefaultTextColor(Qt::white);
 
-    // Timers
+    // Texto de vidas
+    playerLives = 5;
+    invulnerable = false;
+    damageTimer.start();
+    QString hearts;
+    for (int i = 0; i < playerLives; ++i)
+        hearts += "❤️";
+
+    livesText = addText(hearts, QFont("Arial", 16));
+    livesText->setPos(10, 30);
+    livesText->setDefaultTextColor(Qt::red);
+
+    // Pantalla de daño (transparente al inicio)
+    damageFlash = addRect(sceneRect(), QPen(Qt::NoPen), QBrush(QColor(255, 0, 0, 0)));
+    damageFlash->setZValue(50);
+
+    // 🔁 Game loop
     connect(&gameLoop, &QTimer::timeout, this, &Level1Scene::updateScene);
     connect(&countdown, &QTimer::timeout, this, &Level1Scene::updateTimer);
     gameLoop.start(16);
     countdown.start(1000);
 }
 
-void Level1Scene::keyPressEvent(QKeyEvent *event) {
-    player->handleInput(event);
-}
+void Level1Scene::updateScene()
+{
+    // 🔄 Actualiza todos los items que tengan advance()
+    advance();
 
-void Level1Scene::updateScene() {
     static float t = 0;
     t += 0.1f;
 
@@ -58,42 +144,116 @@ void Level1Scene::updateScene() {
     smoke->setPos(newPos);
 
     // 🔥 Física 2: vibración leve del fuego
-    for (auto *fire : fires) {
+    for (auto *fire : fires)
+    {
         QPointF origin = fire->pos();
         QPointF drifted = Physics::randomDrift(t, 0.5f, origin);
         fire->setPos(drifted);
     }
 
-    // 🐕 Física 3: movimiento inercial del perro (con su IA)
-    dog->perceive(fires, player->pos());
-    QPointF newDogPos = Physics::dampedFollow(dog->pos(), dog->pos() + (dog->pos() - player->pos()) * -1, 0.05f);
+    // 🐕 Física 3: movimiento inercial del perro
+    QPointF followTarget = player->pos() + QPointF(0, 90); // 👈 más abajito (aumenta el 40 si quieres más distancia)
+
+    dog->perceive(fires, player->pos(), refuge);
+
+    QPointF newDogPos = Physics::dampedFollow(
+        dog->pos(),
+        followTarget, // 👈 el nuevo target está debajo del jugador
+        0.05f);
+
     dog->setPos(newDogPos);
     dog->update(0.016f);
 
     // 🔍 Colisiones
-    for (auto *fire : fires) {
-        if (player->collidesWithItem(fire)) {
-            qDebug() << "🔥 Tocado por el fuego, pierdes 1 segundo.";
-            timeLeft = std::max(0, timeLeft - 1);
+    for (auto *fire : fires)
+    {
+        if (player->collidesWithItem(fire))
+        {
+            if (!invulnerable && damageTimer.elapsed() > 1000)
+            {
+                invulnerable = true;
+                damageTimer.restart();
+
+                QTimer::singleShot(1000, [this]()
+                                   { invulnerable = false; });
+
+                // Efecto visual de daño
+                damageFlash->setBrush(QColor(255, 0, 0, 100)); // flash rojo
+                QTimer::singleShot(150, [this]()
+                                   {
+                                       damageFlash->setBrush(QColor(255, 0, 0, 0)); // desaparece
+                                   });
+
+                // Resta vida y actualiza HUD
+
+                playerLives = std::max(0, playerLives - 1);
+                livesText->setPlainText(QString("❤️").repeated(playerLives));
+
+                // Penaliza también con 1 segundo
+                timeLeft = std::max(0, timeLeft - 1);
+                timerText->setPlainText(QString("Tiempo: %1").arg(timeLeft));
+
+                if (playerLives == 0)
+                {
+                    timerText->setDefaultTextColor(Qt::red);
+                    timerText->setPlainText("¡Has perdido todas tus vidas!");
+                    gameLoop.stop();
+                    countdown.stop();
+                    return;
+                }
+            }
         }
     }
 
-    if (player->collidesWithItem(refuge)) {
-        qDebug() << "✅ Has llegado al refugio.";
+    if (player->collidesWithItem(refuge))
+    {
+        qDebug() << "Has llegado al refugio.";
         timerText->setPlainText("¡Has llegado al refugio!");
+        emit levelCompleted();
         gameLoop.stop();
         countdown.stop();
     }
+
+    for (auto *block : colliders)
+    {
+        if (player->collidesWithItem(block))
+        {
+            // Revertir el último movimiento (sencillo pero efectivo)
+            player->moveBy(-player->getVelocity().x(), -player->getVelocity().y());
+            break;
+        }
+    }
+
+    if (playerLives == 1)
+    {
+        static bool blink = false;
+        blink = !blink;
+        livesText->setDefaultTextColor(blink ? Qt::red : Qt::white);
+    }
+    else
+    {
+        livesText->setDefaultTextColor(Qt::white);
+    }
 }
 
-void Level1Scene::updateTimer() {
+void Level1Scene::updateTimer()
+{
     timeLeft--;
     timerText->setPlainText(QString("Tiempo: %1").arg(timeLeft));
 
-    if (timeLeft <= 0) {
+    if (timeLeft <= 0)
+    {
         timerText->setDefaultTextColor(Qt::red);
         timerText->setPlainText("⏰ ¡Tiempo agotado!");
         gameLoop.stop();
         countdown.stop();
     }
+}
+
+// 🚀 NUEVO: importante para que las teclas funcionen
+void Level1Scene::setView(QGraphicsView *view)
+{
+    view->setFocusPolicy(Qt::StrongFocus); // Permite que el view capture teclas
+    view->setScene(this);
+    player->setFocus(); // Da el foco al jugador dentro de la escena
 }

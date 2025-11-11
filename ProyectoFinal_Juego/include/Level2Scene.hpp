@@ -1,12 +1,10 @@
-#ifndef LEVEL2SCENE_HPP
-
-#define LEVEL2SCENE_HPP
-
+#pragma once
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
 #include <QTimer>
 #include <QList>
+#include <QKeyEvent>
 #include "Player.hpp"
 #include "Physics.hpp"
 
@@ -32,6 +30,5 @@ private:
     QTimer spawnTimer;
     QTimer countdown;
     int timeLeft;
+    float t; // tiempo acumulado para la física parabólica
 };
-
-#endif
