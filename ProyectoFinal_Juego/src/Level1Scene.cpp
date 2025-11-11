@@ -1,4 +1,4 @@
-#include "Level1Scene.hpp"
+#include <Level1Scene.hpp>
 #include <QGraphicsView>
 #include <QDebug>
 
@@ -21,120 +21,24 @@ Level1Scene::Level1Scene(QObject *parent)
     }
 
     QList<QRectF> blockedZones = {
-        QRectF(7, 717, 35, 102),
-        QRectF(6, 627, 40, 71),
-        QRectF(4, 9, 12, 26),
-        QRectF(4, 58, 19, 31),
-        QRectF(4, 106, 13, 41),
-        QRectF(0, 184, 17, 52),
-        QRectF(35, 237, 48, 15),
-        QRectF(98, 233, 46, 7),
-        QRectF(153, 239, 42, 21),
-        QRectF(217, 262, 21, 29),
-        QRectF(252, 304, 32, 22),
-        QRectF(296, 314, 32, 26),
-        QRectF(308, 361, 25, 26),
-        QRectF(300, 403, 17, 21),
-        QRectF(321, 442, 22, 17),
-        QRectF(349, 474, 31, 14),
-        QRectF(394, 491, 14, 12),
-        QRectF(414, 510, 16, 27),
-        QRectF(409, 561, 23, 22),
-        QRectF(45, 330, 30, 21),
-        QRectF(91, 340, 43, 16),
-        QRectF(161, 342, 41, 19),
-        QRectF(189, 379, 30, 29),
-        QRectF(201, 420, 33, 18),
-        QRectF(254, 448, 29, 22),
-        QRectF(268, 480, 18, 15),
-        QRectF(157, 504, 22, 10),
-        QRectF(187, 497, 33, 11),
-        QRectF(225, 482, 21, 17),
-        QRectF(142, 544, 16, 15),
-        QRectF(141, 572, 18, 13),
-        QRectF(150, 592, 20, 15),
-        QRectF(187, 609, 26, 21),
-        QRectF(201, 643, 17, 16),
-        QRectF(225, 660, 18, 10),
-        QRectF(248, 650, 19, 8),
-        QRectF(278, 639, 20, 5),
-        QRectF(310, 624, 18, 7),
-        QRectF(322, 587, 17, 11),
-        QRectF(356, 598, 20, 9),
-        QRectF(381, 589, 23, 9),
-        QRectF(315, 605, 12, 11),
-        QRectF(85, 5, 14, 10),
-        QRectF(92, 25, 21, 17),
-        QRectF(88, 53, 25, 19),
-        QRectF(122, 73, 20, 10),
-        QRectF(153, 79, 35, 16),
-        QRectF(203, 101, 38, 14),
-        QRectF(255, 112, 39, 13),
-        QRectF(307, 131, 22, 18),
-        QRectF(297, 155, 20, 17),
-        QRectF(318, 178, 20, 16),
-        QRectF(352, 184, 22, 13),
-        QRectF(388, 191, 17, 8),
-        QRectF(416, 209, 11, 30),
-        QRectF(411, 253, 16, 31),
-        QRectF(436, 295, 13, 13),
-        QRectF(435, 324, 17, 30),
-        QRectF(437, 367, 10, 20),
-        QRectF(437, 394, 10, 16),
-        QRectF(448, 416, 20, 12),
-        QRectF(488, 431, 19, 12),
-        QRectF(527, 444, 16, 7),
-        QRectF(556, 429, 18, 15),
-        QRectF(455, 3, 32, 13),
-        QRectF(503, 17, 27, 12),
-        QRectF(535, 41, 18, 44),
-        QRectF(538, 88, 47, 22),
-        QRectF(588, 117, 36, 18),
-        QRectF(644, 138, 28, 14),
-        QRectF(663, 163, 13, 46),
-        QRectF(496, 260, 21, 11),
-        QRectF(524, 253, 27, 13),
-        QRectF(560, 243, 37, 9),
-        QRectF(614, 230, 17, 8),
-        QRectF(632, 214, 15, 7),
-        QRectF(55, 690, 24, 24),
-        QRectF(66, 745, 69, 64),
-        QRectF(260, 807, 45, 15),
-        QRectF(295, 791, 29, 9),
-        QRectF(346, 780, 43, 6),
-        QRectF(408, 764, 11, 11),
-        QRectF(422, 742, 17, 9),
-        QRectF(433, 724, 23, 5),
-        QRectF(467, 715, 26, 8),
-        QRectF(496, 691, 11, 12),
-        QRectF(506, 665, 14, 12),
-        QRectF(523, 659, 27, 9),
-        QRectF(550, 644, 19, 5),
-        QRectF(569, 634, 26, 8),
-        QRectF(598, 629, 19, 8),
-        QRectF(617, 606, 17, 21),
-        QRectF(624, 579, 13, 14),
-        QRectF(631, 542, 15, 15),
-        QRectF(646, 523, 16, 9),
-        QRectF(664, 511, 17, 10),
-        QRectF(671, 493, 17, 13),
-        QRectF(679, 467, 14, 11),
-        QRectF(689, 442, 13, 10),
-        QRectF(705, 447, 6, 7),
-        QRectF(553, 397, 20, 9),
-        QRectF(560, 364, 10, 15),
-        QRectF(573, 341, 11, 16),
-        QRectF(596, 350, 22, 15),
-        QRectF(621, 330, 16, 14),
-        QRectF(642, 316, 18, 18),
-        QRectF(666, 329, 15, 16),
-        QRectF(687, 348, 21, 14),
-        QRectF(2, 365, 26, 19),
-        QRectF(11, 408, 13, 10),
-        QRectF(5, 431, 16, 16),
-        QRectF(4, 492, 13, 47),
-        QRectF(3, 556, 18, 51)
-    };
+        QRectF(104, 5, 228, 57),
+        QRectF(321, 102, 92, 60),
+        QRectF(550, 13, 54, 43),
+        QRectF(635, 49, 69, 73),
+        QRectF(434, 228, 46, 56),
+        QRectF(470, 315, 34, 79),
+        QRectF(686, 233, 18, 86),
+        QRectF(12, 245, 169, 60),
+        QRectF(214, 309, 25, 62),
+        QRectF(270, 343, 46, 40),
+        QRectF(261, 458, 68, 60),
+        QRectF(174, 524, 218, 41),
+        QRectF(211, 592, 86, 20),
+        QRectF(435, 741, 73, 52),
+        QRectF(673, 478, 41, 155),
+        QRectF(2, 672, 87, 143),
+        QRectF(2, 6, 23, 233),
+        QRectF(8, 344, 29, 317)};
 
     // Guarda estos rectángulos en una lista global
     for (const QRectF &r : blockedZones)
@@ -142,7 +46,7 @@ Level1Scene::Level1Scene(QObject *parent)
         QGraphicsRectItem *block = addRect(r, QPen(Qt::NoPen), QBrush(Qt::transparent));
         block->setData(0, "blocked"); // marcador para detección
         block->setZValue(5);
-        colliders.append(block); // 👉 colliders: QList<QGraphicsItem*> en tu clase
+        colliders.append(block);
     }
 
     // Jugador
@@ -156,18 +60,42 @@ Level1Scene::Level1Scene(QObject *parent)
     addItem(dog);
     dog->setPos(200, 400);
 
-    // Refugio
-    refuge = addPixmap(QPixmap("../assets/sprites/Level1_debris.png").scaled(48, 48));
-    refuge->setPos(700, 280);
-
     // Obstáculos de fuego
-    for (int i = 0; i < 5; ++i)
+    QList<QPointF> firePositions = {
+        // QPointF(67, 431),
+        QPointF(412, 43),
+        QPointF(479, 130),
+        QPointF(531, 196),
+        QPointF(615, 412),
+        QPointF(490, 554),
+        QPointF(164, 761)};
+
+    for (const QPointF &pos : firePositions)
     {
-        auto *fire = addPixmap(QPixmap("../assets/sprites/Level1_fire.png").scaled(32, 32));
-        fire->setPos(QRandomGenerator::global()->bounded(150, 700),
-                     QRandomGenerator::global()->bounded(100, 500));
+        AnimatedSprite *fire = new AnimatedSprite("../assets/sprites/Level_fire.png", 4, 4);
+        fire->setAnimationRow(0);
+        fire->setScale(1.5);
+        fire->start(270);
+        fire->setPos(pos);
+
+        addItem(fire);
         fires.append(fire);
     }
+
+    // Refugio
+    QList<QRectF> refugePositions = {
+        QRectF(401, 14, 60, 49),
+        QRectF(70, 435, 75, 27),
+        QRectF(666, 783, 64, 56)};
+
+    // Selecciona un refugio aleatorio
+    int randomIndex = QRandomGenerator::global()->bounded(refugePositions.size());
+    QRectF chosenArea = refugePositions[randomIndex];
+
+    // Crea un rectángulo negro como refugio
+    refuge = addRect(chosenArea, QPen(Qt::NoPen), QBrush(Qt::black));
+    refuge->setZValue(5);
+
 
     // Humo oscilante
     smoke = addPixmap(QPixmap("../assets/sprites/Level1_fire.png").scaled(32, 32));
@@ -226,7 +154,7 @@ void Level1Scene::updateScene()
     // 🐕 Física 3: movimiento inercial del perro
     QPointF followTarget = player->pos() + QPointF(0, 90); // 👈 más abajito (aumenta el 40 si quieres más distancia)
 
-    dog->perceive(fires, player->pos());
+    dog->perceive(fires, player->pos(), refuge);
 
     QPointF newDogPos = Physics::dampedFollow(
         dog->pos(),

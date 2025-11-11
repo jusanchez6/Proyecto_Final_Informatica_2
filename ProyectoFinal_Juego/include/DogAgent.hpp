@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QList>
 #include <QPointF>
+#include <QSoundEffect>
 
 class DogAgent : public AnimatedSprite
 {
@@ -12,7 +13,7 @@ public:
     DogAgent();
     void update(float dt);
 
-    void perceive(const QList<QGraphicsPixmapItem *> &fires, const QPointF &playerPos);
+    void perceive(const QList<QGraphicsPixmapItem*> &fires, const QPointF &playerPos, const QGraphicsItem *refuge);
     void act();
     void learn(const QPointF &dangerPos);
 
@@ -26,4 +27,6 @@ private:
     int lastRow = 0;
 
     QPointF lastTarget;
+
+    QSoundEffect barkSound;
 };

@@ -9,31 +9,34 @@ DogAgent::DogAgent()
     start(150); // animación cada 150 ms
     setZValue(10);
     setPos(150, 320);
+
+    barkSound.setSource(QUrl::fromLocalFile("../assets/sounds/dog_bark.wav"));
+    barkSound.setVolume(0.7f);
 }
 
 // 1) Percepción: detecta fuego cerca y jugador
-void DogAgent::perceive(const QList<QGraphicsPixmapItem *> &fires, const QPointF &playerPos)
+void DogAgent::perceive(const QList<QGraphicsPixmapItem *> &fires, const QPointF &playerPos, const QGraphicsItem *refuge)
 {
+    Q_UNUSED(fires); // ya no se usan los fuegos
     dangerNearby = false;
 
-    for (auto *fire : fires)
+    // 📍 Distancia al refugio
+    QPointF refugeCenter = refuge->boundingRect().center() + refuge->pos();
+    if (QLineF(pos(), refugeCenter).length() < 250)
     {
-        if (QLineF(pos(), fire->pos()).length() < 120)
-        {
-            dangerNearby = true;
-            learn(fire->pos());
-        }
+        qDebug() << refugeCenter;
+        dangerNearby = true; // ladrar cerca del refugio
     }
 
-    // Sigue al jugador si no hay fuego
+    // 🧭 Movimiento: sigue al jugador normalmente
     if (!dangerNearby)
     {
         target = playerPos;
     }
     else
     {
-        // Si hay fuego cerca, se aleja un poco
-        target = QPointF(pos().x() - 40, pos().y() - 40);
+        // Cuando está cerca del refugio, se queda quieto y ladra
+        target = pos();
     }
 }
 
@@ -41,9 +44,10 @@ void DogAgent::perceive(const QList<QGraphicsPixmapItem *> &fires, const QPointF
 void DogAgent::act()
 {
     QPointF dir = target - pos();
-    qreal dist = qSqrt(dir.x()*dir.x() + dir.y()*dir.y());
+    qreal dist = qSqrt(dir.x() * dir.x() + dir.y() * dir.y());
 
-    if (dist > 1.0) {
+    if (dist > 1.0)
+    {
         dir /= dist;
         setPos(pos() + dir * 2.0);
 
@@ -57,20 +61,42 @@ void DogAgent::act()
         int newRow = lastRow;
 
         // Si el jugador realmente se mueve, usa su dirección como referencia
-        if (qAbs(playerVel.x()) > 1.0 || qAbs(playerVel.y()) > 1.0) {
-            if (qAbs(playerVel.x()) > qAbs(playerVel.y())) {
+        if (qAbs(playerVel.x()) > 1.0 || qAbs(playerVel.y()) > 1.0)
+        {
+            if (qAbs(playerVel.x()) > qAbs(playerVel.y()))
+            {
                 newRow = (playerVel.x() > 0) ? 2 : 1; // derecha / izquierda
-            } else {
+            }
+            else
+            {
                 newRow = (playerVel.y() > 0) ? 0 : 3; // abajo / arriba
             }
         }
 
-        if (newRow != lastRow) {
+        if (newRow != lastRow)
+        {
             setAnimationRow(newRow);
             lastRow = newRow;
         }
-    } else {
+    }
+    else
+    {
         setAnimationRow(lastRow); // idle en última dirección
+    }
+
+    if (dangerNearby)
+    {
+        qDebug() << "🐕 Ladrando: ¡Refugio detectado!";
+
+        if (barkSound.isLoaded() && barkSound.isPlaying() == false)
+        {
+            barkSound.play();
+        }
+        setOpacity(0.6);
+    }
+    else
+    {
+        setOpacity(1.0);
     }
 
     // Efecto visual (alerta)

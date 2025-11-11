@@ -29,7 +29,7 @@ private:
     DogAgent *dog;
     QList<QGraphicsPixmapItem *> fires;
     QGraphicsPixmapItem *smoke;
-    QGraphicsPixmapItem *refuge;
+    QGraphicsItem *refuge;
 
     QTimer gameLoop;
     QTimer countdown;
