@@ -11,7 +11,10 @@ SOURCES += \
     src/Player.cpp \
     src/DogAgent.cpp \
     src/Physics.cpp \
-    src/Level2Scene.cpp
+    src/Level2Scene.cpp \
+    src/Level3Scene.cpp \ 
+    src/Plane.cpp \
+    src/AnimatedSprite.cpp
 
 HEADERS += \
     include/GameObject.hpp \
@@ -19,7 +22,10 @@ HEADERS += \
     include/Player.hpp \
     include/DogAgent.hpp \
     include/Physics.hpp \
-    include/Level2Scene.hpp
+    include/Level2Scene.hpp \
+    include/Level3Scene.hpp \ 
+    include/Plane.hpp \
+    include/AnimatedSprite.hpp
 
 RESOURCES += resources.qrc
 

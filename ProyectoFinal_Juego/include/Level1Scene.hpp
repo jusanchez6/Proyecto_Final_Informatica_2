@@ -6,22 +6,19 @@
 #include <QGraphicsTextItem>
 #include <QTimer>
 #include <QKeyEvent>
-#include <QList>
-#include <QRandomGenerator>
-#include <QDebug>
-#include <cmath>
-#include <QtMath>
-
-#include <Player.hpp>
-#include <DogAgent.hpp>
-#include <Physics.hpp>
+#include <QElapsedTimer>
+#include "Player.hpp"
+#include "DogAgent.hpp"
+#include "Physics.hpp"
 
 class Level1Scene : public QGraphicsScene
 {
     Q_OBJECT
 public:
     explicit Level1Scene(QObject *parent = nullptr);
-    void keyPressEvent(QKeyEvent *event) override;
+    void setView(QGraphicsView *view); // 👈 nuevo método
+signals:
+    void levelCompleted();
 
 private slots:
     void updateScene();
@@ -30,16 +27,24 @@ private slots:
 private:
     Player *player;
     DogAgent *dog;
-    QGraphicsPixmapItem *refuge;
     QList<QGraphicsPixmapItem *> fires;
     QGraphicsPixmapItem *smoke;
-    QGraphicsTextItem *timerText;
+    QGraphicsPixmapItem *refuge;
+
     QTimer gameLoop;
     QTimer countdown;
-    int timeLeft;
 
-signals:
-    void levelCompleted();
+    int timeLeft;
+    int playerLives;
+
+    bool invulnerable;
+    QElapsedTimer damageTimer;
+
+    QGraphicsTextItem *timerText;
+    QGraphicsTextItem *livesText;
+    QGraphicsRectItem *damageFlash;
+
+    QList<QGraphicsItem *> colliders;
 };
 
 #endif
