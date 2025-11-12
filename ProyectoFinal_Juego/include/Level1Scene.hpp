@@ -11,6 +11,8 @@
 #include "DogAgent.hpp"
 #include "Physics.hpp"
 
+#define LEVEL_ID 1
+
 class Level1Scene : public QGraphicsScene
 {
     Q_OBJECT

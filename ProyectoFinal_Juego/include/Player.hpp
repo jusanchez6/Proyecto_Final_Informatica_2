@@ -7,7 +7,7 @@
 
 class Player : public AnimatedSprite {
 public:
-    Player();
+    Player(int level);
 
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;

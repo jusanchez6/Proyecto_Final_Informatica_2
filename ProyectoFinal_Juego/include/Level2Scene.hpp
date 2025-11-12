@@ -8,6 +8,8 @@
 #include "Player.hpp"
 #include "Physics.hpp"
 
+#define LEVEL_ID 2
+
 class Level2Scene : public QGraphicsScene {
     Q_OBJECT
 public:

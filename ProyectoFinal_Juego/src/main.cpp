@@ -15,8 +15,8 @@ int main(int argc, char *argv[])
 
     // Crear escenas
     Level1Scene *level1 = new Level1Scene();
-    Level2Scene *level2 = new Level2Scene();
-    Level3Scene *level3 = new Level3Scene();
+    //Level2Scene *level2 = new Level2Scene();
+    //Level3Scene *level3 = new Level3Scene();
 
     // // Conectar niveles (avanza al siguiente cuando termina)
     // QObject::connect(level1, &Level1Scene::levelCompleted, [&]() {

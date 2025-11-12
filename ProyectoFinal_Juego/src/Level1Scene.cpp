@@ -50,7 +50,7 @@ Level1Scene::Level1Scene(QObject *parent)
     }
 
     // Jugador
-    player = new Player();
+    player = new Player(LEVEL_ID);
     addItem(player);
     player->setPos(79, 130);
     player->setFlag(QGraphicsItem::ItemIsFocusable);

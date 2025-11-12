@@ -12,7 +12,7 @@ Level2Scene::Level2Scene(QObject *parent)
     setBackgroundBrush(Qt::darkBlue);
 
     // Jugador
-    player = new Player();
+    player = new Player(LEVEL_ID);
     addItem(player);
     player->setPos(100, 500);
 
