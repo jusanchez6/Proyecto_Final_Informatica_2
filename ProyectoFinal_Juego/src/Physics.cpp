@@ -24,9 +24,20 @@ QPointF Physics::dampedFollow(const QPointF &current, const QPointF &target, flo
     return current + delta * damping;
 }
 
-QPointF Physics::projectile(float t, const QPointF& start, float v0, float g) {
-    // Movimiento vertical con aceleración constante (gravedad)
-    float y = start.y() + v0 * t + 0.5f * g * t * t;
-    return QPointF(start.x(), y);
+QPointF Physics::projectile(float t, const QPointF &origin, const QPointF &velocity, float gravity)
+{
+    float x = origin.x() + velocity.x() * t;
+    float y = origin.y() + velocity.y() * t + 0.5f * gravity * t * t;
+    return QPointF(x, y);
 }
 
+// Devuelve un velocity vector (vx, vy) que apunta hacia 'target' con magnitud speed.
+// Esto no resuelve arcos por altura, es dirección simple.
+QPointF Physics::velocityToTarget(const QPointF &origin, const QPointF &target, float speed)
+{
+    QPointF d = target - origin;
+    float dist = qSqrt(d.x() * d.x() + d.y() * d.y());
+    if (dist <= 1e-6f)
+        return QPointF(0, 0);
+    return QPointF(d.x() / dist * speed, d.y() / dist * speed);
+}

@@ -123,7 +123,7 @@ Level1Scene::Level1Scene(QObject *parent)
     damageFlash = addRect(sceneRect(), QPen(Qt::NoPen), QBrush(QColor(255, 0, 0, 0)));
     damageFlash->setZValue(50);
 
-    // 🔁 Game loop
+    // Game loop
     connect(&gameLoop, &QTimer::timeout, this, &Level1Scene::updateScene);
     connect(&countdown, &QTimer::timeout, this, &Level1Scene::updateTimer);
     gameLoop.start(16);
@@ -132,18 +132,18 @@ Level1Scene::Level1Scene(QObject *parent)
 
 void Level1Scene::updateScene()
 {
-    // 🔄 Actualiza todos los items que tengan advance()
+    // Actualiza todos los items que tengan advance()
     advance();
 
     static float t = 0;
     t += 0.1f;
 
-    // 🌫️ Física 1: movimiento oscilatorio del humo
+    // Física 1: movimiento oscilatorio del humo
     QPointF smokeOrigin(400, 150);
     QPointF newPos = Physics::oscillatory(t, 10.0f, 2.0f, smokeOrigin);
     smoke->setPos(newPos);
 
-    // 🔥 Física 2: vibración leve del fuego
+    // Física 2: vibración leve del fuego
     for (auto *fire : fires)
     {
         QPointF origin = fire->pos();
@@ -151,7 +151,7 @@ void Level1Scene::updateScene()
         fire->setPos(drifted);
     }
 
-    // 🐕 Física 3: movimiento inercial del perro
+    // Física 3: movimiento inercial del perro
     QPointF followTarget = player->pos() + QPointF(0, 90); // 👈 más abajito (aumenta el 40 si quieres más distancia)
 
     dog->perceive(fires, player->pos(), refuge);

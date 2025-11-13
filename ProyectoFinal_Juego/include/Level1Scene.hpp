@@ -18,7 +18,7 @@ class Level1Scene : public QGraphicsScene
     Q_OBJECT
 public:
     explicit Level1Scene(QObject *parent = nullptr);
-    void setView(QGraphicsView *view); // 👈 nuevo método
+    void setView(QGraphicsView *view); // nuevo método
 signals:
     void levelCompleted();
 
