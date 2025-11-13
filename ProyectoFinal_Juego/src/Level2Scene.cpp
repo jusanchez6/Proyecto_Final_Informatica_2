@@ -6,7 +6,7 @@
 
 Level2Scene::Level2Scene(QObject *parent)
     : QGraphicsScene(parent),
-      timeLeft(25),
+      timeLeft(60),
       t(0.0f)
 {
 
@@ -24,7 +24,6 @@ Level2Scene::Level2Scene(QObject *parent)
         qWarning() << "No se pudo cargar el fondo.";
     }
 
-
     // Jugador
     player = new Player(2);
     addItem(player);
@@ -38,6 +37,23 @@ Level2Scene::Level2Scene(QObject *parent)
     timerText->setDefaultTextColor(Qt::white);
     timerText->setPos(10, 10);
 
+    playerLives = 5;
+    invulnerable = false;
+    damageTimer.start();
+
+    QString hearts;
+
+    for (int i = 0; i < playerLives; i++)
+    {
+        hearts += "❤️";
+    }
+    livesText = addText(hearts, QFont("Arial", 16));
+    livesText->setPos(10, 30);
+    livesText->setDefaultTextColor(Qt::red);
+
+    damageFlash = addRect(sceneRect(), QPen(Qt::NoPen), QBrush(QColor(255, 0, 0, 0)));
+    damageFlash->setZValue(50);
+
     // Timers
     connect(&gameLoop, &QTimer::timeout, this, &Level2Scene::updateScene);
     connect(&spawnTimer, &QTimer::timeout, this, &Level2Scene::spawnRock);
@@ -45,7 +61,7 @@ Level2Scene::Level2Scene(QObject *parent)
 
     // enemigos
     connect(&enemyTimer, &QTimer::timeout, this, &Level2Scene::spawnEnemy);
-    enemyTimer.start(3000);
+    enemyTimer.start(2500);
 
     gameLoop.start(16);
     spawnTimer.start(1500);
@@ -59,13 +75,19 @@ void Level2Scene::keyPressEvent(QKeyEvent *event)
     case Qt::Key_A:
     case Qt::Key_Left:
         player->setAnimationRow(1);
+        playerDirection = -1;
         playerVelocityX = -moveSpeed;
         break;
 
     case Qt::Key_D:
     case Qt::Key_Right:
         player->setAnimationRow(2);
+        playerDirection = 1;
         playerVelocityX = moveSpeed;
+        break;
+
+    case Qt::Key_Space:
+        shootBullet();
         break;
 
     case Qt::Key_W:
@@ -91,6 +113,7 @@ void Level2Scene::keyReleaseEvent(QKeyEvent *event)
         player->setAnimationRow(0);
     }
 }
+
 // Actualiza físicas y colisiones
 void Level2Scene::updateScene()
 {
@@ -104,7 +127,7 @@ void Level2Scene::updateScene()
         QPointF newPos = Physics::projectile(data.t, data.origin, data.velocity, data.gravity);
         p->setPos(newPos);
 
-        if (p->y() > 600)
+        if (p->y() > 841)
         {
             toRemove.append(p);
             continue;
@@ -112,12 +135,36 @@ void Level2Scene::updateScene()
 
         if (player->collidesWithItem(p))
         {
-            timerText->setPlainText("💥 ¡Golpeado!");
-            timerText->setDefaultTextColor(Qt::red);
-            gameLoop.stop();
-            spawnTimer.stop();
-            countdown.stop();
-            return;
+            if (!invulnerable && damageTimer.elapsed() > 1000)
+            {
+                invulnerable = true;
+                damageTimer.restart();
+                QTimer::singleShot(1000, [this]()
+                                   { invulnerable = false; });
+
+                damageFlash->setBrush(QColor(255, 0, 0, 100)); // flash rojo
+                QTimer::singleShot(150, [this]()
+                                   {
+                                       damageFlash->setBrush(QColor(255, 0, 0, 0)); // desaparece
+                                   });
+
+                // restar la vida y actualizar el HUD
+                playerLives = std::max(0, playerLives -1);
+                livesText->setPlainText(QString("❤️").repeated(playerLives));
+
+                // Agrega un segundo de penalización
+                timeLeft = std::max(0, timeLeft + 1);
+                timerText->setPlainText(QString("Tiempo: %1").arg(timeLeft));
+
+                if (playerLives == 0)
+                {
+                    timerText->setDefaultTextColor(Qt::red);
+                    timerText->setPlainText("¡Has perdido todas tus vidas!");
+                    gameLoop.stop();
+                    countdown.stop();
+                    return;
+                }
+            }
         }
     }
 
@@ -140,19 +187,77 @@ void Level2Scene::updateScene()
         onGround = true;
     }
 
+    for (auto *bullet : bullets)
+    {
+        int dir = bullet->data(0).toInt();
+        bullet->moveBy(8 * dir, 0);
+
+        bool hit = false;
+
+        for (auto *enemy : enemies)
+        {
+            if (bullet->collidesWithItem(enemy))
+            {
+                hit = true;
+
+                // Invertir dirección actual del enemigo
+                int dirEnemy = enemy->data(0).toInt();
+                enemy->setData(0, -dirEnemy);
+
+                // Cambiar animación según dirección
+                enemy->setAnimationRow(dirEnemy == 1 ? 2 : 1);
+
+                break;
+            }
+        }
+
+        if (hit || bullet->x() < 0 || bullet->x() > sceneRect().width())
+        {
+            removeItem(bullet);
+            bullets.removeOne(bullet);
+            delete bullet;
+            break;
+        }
+    }
+
     for (auto *enemy : enemies)
     {
-        enemy->setX(enemy->x() - 2); // velocidad constante hacia la izquierda
+        int dir = enemy->data(0).toInt();  // 1 = derecha, -1 = izquierda
+        enemy->setX(enemy->x() + 2 * dir); // usa su propia dirección
+        enemy->setAnimationRow(dir == 1 ? 2 : 1);
 
         if (player->collidesWithItem(enemy))
         {
-            timerText->setPlainText("💀 ¡Te alcanzaron!");
-            timerText->setDefaultTextColor(Qt::red);
-            gameLoop.stop();
-            spawnTimer.stop();
-            countdown.stop();
-            enemyTimer.stop();
-            return;
+            if (!invulnerable && damageTimer.elapsed() > 1000)
+            {
+                invulnerable = true;
+                damageTimer.restart();
+                QTimer::singleShot(1000, [this]()
+                                   { invulnerable = false; });
+
+                damageFlash->setBrush(QColor(255, 0, 0, 100)); // flash rojo
+                QTimer::singleShot(150, [this]()
+                                   {
+                                       damageFlash->setBrush(QColor(255, 0, 0, 0)); // desaparece
+                                   });
+
+                // restar la vida y actualizar el HUD
+                playerLives = std::max(0, playerLives -1);
+                livesText->setPlainText(QString("❤️").repeated(playerLives));
+
+                // Agrega un segundo de penalización
+                timeLeft = std::max(0, timeLeft + 1);
+                timerText->setPlainText(QString("Tiempo: %1").arg(timeLeft));
+
+                if (playerLives == 0)
+                {
+                    timerText->setDefaultTextColor(Qt::red);
+                    timerText->setPlainText("¡Has perdido todas tus vidas!");
+                    gameLoop.stop();
+                    countdown.stop();
+                    return;
+                }
+            }
         }
     }
 
@@ -168,6 +273,16 @@ void Level2Scene::updateScene()
                                      return false;
                                  }),
                   enemies.end());
+}
+
+void Level2Scene::shootBullet()
+{
+    auto *bullet = addPixmap(QPixmap("../assets/sprites/bullet.png").scaled(32, 32));
+    bullet->setPos(player->x() + player->boundingRect().width() / 2,
+                   player->y() + player->boundingRect().height() / 2);
+
+    bullet->setData(0, QVariant(playerDirection)); // guardar dirección
+    bullets.append(bullet);
 }
 
 void Level2Scene::spawnRock()
@@ -192,17 +307,26 @@ void Level2Scene::spawnRock()
 
 void Level2Scene::spawnEnemy()
 {
-    // Crear enemigo animado
     AnimatedSprite *enemy = new AnimatedSprite("../assets/sprites/enemigo.png", 3, 4);
-    enemy->setAnimationRow(1);  // fila inicial de animación
-    enemy->setScale(1.7);       // ajustá el tamaño según tu sprite
-    enemy->start(120);          // velocidad de animación (ms por frame)
-    enemy->setPos(800, groundLevel + enemy->boundingRect().height()); // aparece justo sobre el suelo
+
+    // Elegir lado aleatoriamente (0 = izquierda, 1 = derecha)
+    bool fromLeft = QRandomGenerator::global()->bounded(2) == 0;
+
+    int dir = fromLeft ? 1 : -1; // dirección inicial
+    enemy->setData(0, dir);      // guardar dirección
+
+    // Crear sprite animado (o pixmap si no usas AnimatedSprite)
+    enemy->setScale(1.5);
+    enemy->setAnimationRow(fromLeft ? 2 : 1);
+    enemy->start(120);
+
+    // Posición inicial
+    float x = fromLeft ? -50 : sceneRect().width() + 50;
+    enemy->setPos(x, groundLevel + enemy->boundingRect().height());
 
     addItem(enemy);
     enemies.append(enemy);
 }
-
 // Temporizador de nivel
 void Level2Scene::updateTimer()
 {
