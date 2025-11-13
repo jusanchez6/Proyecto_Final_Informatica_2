@@ -12,10 +12,10 @@
 #include <QDebug>
 #include <QKeyEvent>
 
-
 #include "Plane.hpp"
 
-class Level3Scene : public QGraphicsScene {
+class Level3Scene : public QGraphicsScene
+{
     Q_OBJECT
 public:
     explicit Level3Scene(QObject *parent = nullptr);
@@ -34,15 +34,23 @@ private slots:
 private:
     void spawnPlanes();
     void predictConflicts(); // assistant: mark potential collisions
-    Plane* planeAtPos(const QPointF &p);
+    Plane *planeAtPos(const QPointF &p);
 
-    QList<Plane*> m_planes;
-    Plane* m_selected;
-    QGraphicsLineItem* m_dragLine;
+    QList<Plane *> m_planes;
+    Plane *m_selected;
+    QGraphicsLineItem *m_dragLine;
     QTimer m_gameLoop;
-    QGraphicsTextItem* m_hintText;
+    QGraphicsTextItem *m_hintText;
+
+    // zonas de peligro y cronometro
+    QList<QGraphicsEllipseItem *> m_dangerZones;
+    QTimer m_dangerTimer;
+
+    void spawnDangerZones();
+
+    void endLevel(const QString &reason);
+
     float m_time; // seconds
 };
-
 
 #endif

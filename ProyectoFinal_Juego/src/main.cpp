@@ -10,13 +10,13 @@ int main(int argc, char *argv[])
 
     // Crear vista principal
     QGraphicsView view;
-    view.setWindowTitle("Proyecto Final - nivel2");
+    view.setWindowTitle("Proyecto Final - nivel3");
     view.setFixedSize(736, 841);
 
     // Crear escenas
     //Level1Scene *level1 = new Level1Scene();
-    Level2Scene *level2 = new Level2Scene();
-    //Level3Scene *level3 = new Level3Scene();
+    //Level2Scene *level2 = new Level2Scene();
+    Level3Scene *level3 = new Level3Scene();
 
     // // Conectar niveles (avanza al siguiente cuando termina)
     // QObject::connect(level1, &Level1Scene::levelCompleted, [&]() {
@@ -28,8 +28,14 @@ int main(int argc, char *argv[])
     // });
 
     // Mostrar primer nivel
-    level2->setView(&view);   // 👈 muy importante: da foco al jugador
-    view.setScene(level2);
+    // level2->setView(&view);   // 👈 muy importante: da foco al jugador
+    // view.setScene(level2);
+    // view.show();
+
+
+
+    // Asignar la escena a la vista
+    view.setScene(level3);
     view.show();
 
     return app.exec();
