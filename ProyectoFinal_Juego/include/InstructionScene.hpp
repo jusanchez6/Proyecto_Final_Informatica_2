@@ -3,9 +3,7 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsTextItem>
-#include <QGraphicsRectItem>
-#include <QGraphicsSceneMouseEvent>
-#include <QFont>
+#include <QPushButton>
 #include <functional>
 
 class InstructionScene : public QGraphicsScene
@@ -13,14 +11,14 @@ class InstructionScene : public QGraphicsScene
     Q_OBJECT
 
 public:
-    InstructionScene(const QString &title, const QString &instructions, std::function<void()> onStart, QObject *parent = nullptr);
-
-protected: 
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    InstructionScene(const QString &title,
+                     const QString &instructions,
+                     std::function<void()> onStart,
+                     QObject *parent = nullptr);
 
 private:
-    std::function<void ()> startCallback;
-
+    QGraphicsTextItem *titleText;
+    QGraphicsTextItem *instructionText;
 };
 
 #endif
