@@ -1,6 +1,6 @@
 #include <InstructionScene.hpp>
 
-InstructionScene::InstructionScene(const QString &title, const QString &instructions, std::function<void()> onStart, QObject *parent = nullptr)
+InstructionScene::InstructionScene(const QString &title, const QString &instructions, std::function<void()> onStart, QObject *parent)
     : QGraphicsScene(parent), startCallback(onStart)
 {
     setSceneRect(0, 0, 736, 841);

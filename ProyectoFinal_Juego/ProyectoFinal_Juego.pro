@@ -15,7 +15,9 @@ SOURCES += \
     src/Level3Scene.cpp \ 
     src/Plane.cpp \
     src/AnimatedSprite.cpp \
-    src/InstructionScene.cpp
+    src/InstructionScene.cpp \
+    src/MenuScene.cpp \
+    src/GameController.cpp
 
 HEADERS += \
     include/GameObject.hpp \
@@ -27,7 +29,9 @@ HEADERS += \
     include/Level3Scene.hpp \ 
     include/Plane.hpp \
     include/AnimatedSprite.hpp \
-    include/InstructionScene.hpp
+    include/InstructionScene.hpp \
+    include/MenuScene.hpp \
+    include/GameController.hpp
 
 RESOURCES += resources.qrc
 

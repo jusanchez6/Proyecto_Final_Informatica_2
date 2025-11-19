@@ -1,45 +1,55 @@
 #include <QApplication>
 #include <QGraphicsView>
-#include "Level1Scene.hpp"
-#include "Level2Scene.hpp"
-#include "Level3Scene.hpp"
+#include <GameController.hpp>
+
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    // Crear vista principal
-    QGraphicsView view;
-    view.setWindowTitle("Proyecto Final - nivel3");
-    view.setFixedSize(736, 841);
-
-    // Crear escenas
-    //Level1Scene *level1 = new Level1Scene();
-    //Level2Scene *level2 = new Level2Scene();
-    Level3Scene *level3 = new Level3Scene();
-
-    // // Conectar niveles (avanza al siguiente cuando termina)
-    // QObject::connect(level1, &Level1Scene::levelCompleted, [&]() {
-    //     view.setScene(level2);
-    // });
-
-    // QObject::connect(level2, &Level2Scene::levelCompleted, [&]() {
-    //     view.setScene(level3);
-    // });
-
-    // Mostrar primer nivel
-    // level2->setView(&view);   // muy importante: da foco al jugador
-    // view.setScene(level2);
-    // view.show();
-
-
-
-    // Asignar la escena a la vista
-    view.setScene(level3);
-    view.show();
+    GameController game;
+    game.showMenu();
 
     return app.exec();
 }
+
+
+// int main(int argc, char *argv[])
+// {
+//     QApplication app(argc, argv);
+
+//     // Crear vista principal
+//     QGraphicsView view;
+//     view.setWindowTitle("Proyecto Final - nivel3");
+//     view.setFixedSize(736, 841);
+
+//     // Crear escenas
+//     //Level1Scene *level1 = new Level1Scene();
+//     //Level2Scene *level2 = new Level2Scene();
+//     Level3Scene *level3 = new Level3Scene();
+
+//     // // Conectar niveles (avanza al siguiente cuando termina)
+//     // QObject::connect(level1, &Level1Scene::levelCompleted, [&]() {
+//     //     view.setScene(level2);
+//     // });
+
+//     // QObject::connect(level2, &Level2Scene::levelCompleted, [&]() {
+//     //     view.setScene(level3);
+//     // });
+
+//     // Mostrar primer nivel
+//     // level2->setView(&view);   // muy importante: da foco al jugador
+//     // view.setScene(level2);
+//     // view.show();
+
+
+
+//     // Asignar la escena a la vista
+//     view.setScene(level3);
+//     view.show();
+
+//     return app.exec();
+// }
 
 
 // #include <QApplication>

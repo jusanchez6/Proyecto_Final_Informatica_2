@@ -370,7 +370,7 @@ void Level3Scene::updateScene()
         if (pos.x() < 0 || pos.x() > bounds.width() ||
             pos.y() < 0 || pos.y() > bounds.height())
         {
-            qDebug() << "❌ Avión salió del mapa!";
+            qDebug() << "Avión salió del mapa!";
             endLevel("¡Un avión salió del espacio aéreo!");
             return;
         }
@@ -439,7 +439,7 @@ void Level3Scene::updateScene()
     // Si todos los aviones fueron rescatados, termina el nivel
     if (m_planes.isEmpty())
     {
-        endLevel("🎉 ¡Todos los aviones llegaron a zonas seguras!");
+        endLevel("¡Todos los aviones llegaron a zonas seguras!");
         return;
     }
 }
