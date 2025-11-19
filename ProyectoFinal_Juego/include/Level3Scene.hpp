@@ -44,9 +44,13 @@ private:
 
     // zonas de peligro y cronometro
     QList<QGraphicsEllipseItem *> m_dangerZones;
+    QList<QGraphicsEllipseItem *> m_safeZones;
     QTimer m_dangerTimer;
+    QTimer safeZoneTimer;
+
 
     void spawnDangerZones();
+    void spawnSafeZones();
 
     void endLevel(const QString &reason);
 

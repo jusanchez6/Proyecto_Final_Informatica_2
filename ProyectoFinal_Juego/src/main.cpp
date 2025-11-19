@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     // });
 
     // Mostrar primer nivel
-    // level2->setView(&view);   // 👈 muy importante: da foco al jugador
+    // level2->setView(&view);   // muy importante: da foco al jugador
     // view.setScene(level2);
     // view.show();
 
