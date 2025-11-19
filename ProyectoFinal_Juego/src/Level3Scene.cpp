@@ -1,5 +1,10 @@
 #include <Level3Scene.hpp>
 
+QMediaPlayer *Level3Scene::musicPlayer = nullptr;
+QMediaPlaylist *Level3Scene::playlist = nullptr;
+
+
+
 Level3Scene::Level3Scene(QObject *parent)
     : QGraphicsScene(parent), m_selected(nullptr), m_dragLine(nullptr), m_time(0.0f)
 {
@@ -17,10 +22,24 @@ Level3Scene::Level3Scene(QObject *parent)
         qWarning() << "No se pudo cargar el fondo.";
     }
 
+
+
     // hint text
     m_hintText = addText("Nivel 3 - Control Aéreo: click y arrastra para fijar rumbo", QFont("Arial", 12));
     m_hintText->setDefaultTextColor(Qt::white);
     m_hintText->setPos(10, 10);
+
+
+    if (!musicPlayer) {
+        playlist = new QMediaPlaylist();
+        playlist->addMedia(QUrl::fromLocalFile("/home/julian-sanchez/Univerisdad/Informatica 2/Proyecto_Final_Informatica_2/ProyectoFinal_Juego/assets/sounds/level_3.wav"));
+        playlist->setPlaybackMode(QMediaPlaylist::Loop);
+
+        musicPlayer = new QMediaPlayer();
+        musicPlayer->setPlaylist(playlist);
+        musicPlayer->setVolume(40);
+        musicPlayer->play();
+    }
 
     // spawn some planes
     spawnPlanes();
@@ -441,5 +460,18 @@ void Level3Scene::updateScene()
     {
         endLevel("¡Todos los aviones llegaron a zonas seguras!");
         return;
+    }
+}
+
+
+void Level3Scene::stopMusic()
+{
+    if (musicPlayer) {
+        musicPlayer->stop();
+        delete musicPlayer;
+        musicPlayer = nullptr;
+
+        delete playlist;
+        playlist = nullptr;
     }
 }

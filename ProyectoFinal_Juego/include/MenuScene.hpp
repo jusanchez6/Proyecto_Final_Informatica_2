@@ -7,6 +7,9 @@
 #include <QGraphicsRectItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QFont>
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
+
 #include <functional>
 
 class MenuScene : public QGraphicsScene
@@ -15,14 +18,15 @@ class MenuScene : public QGraphicsScene
 
 public:
     MenuScene(std::function<void()> startCallback, QObject *parent = nullptr);
+    static void stopMusic();
 
 private:
     std::function<void()> m_startCallback;
+    static QMediaPlayer *musicPlayer;
+    static QMediaPlaylist * playlist;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 };
-
-
 
 #endif

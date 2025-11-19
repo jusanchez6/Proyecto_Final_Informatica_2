@@ -1,33 +1,38 @@
 #include <InstructionScene.hpp>
+#include <QGraphicsProxyWidget>
+#include <QFont>
 
-InstructionScene::InstructionScene(const QString &title, const QString &instructions, std::function<void()> onStart, QObject *parent)
-    : QGraphicsScene(parent), startCallback(onStart)
+InstructionScene::InstructionScene(const QString &title,
+                                   const QString &instructions,
+                                   std::function<void()> onStart,
+                                   QObject *parent)
+    : QGraphicsScene(parent)
 {
+    // Tamaño de la escena
     setSceneRect(0, 0, 736, 841);
 
+    // Fondo negro
+    setBackgroundBrush(Qt::black);
 
-    QGraphicsTextItem * titleItem = addText(title, QFont("Arial", 32, QFont::Bold));
-    titleItem->setDefaultTextColor(Qt::white);
-    titleItem->setPos(100, 40);
+    // Título grande
+    titleText = addText(title, QFont("Arial", 28, QFont::Bold));
+    titleText->setDefaultTextColor(Qt::white);
+    titleText->setPos(80, 50);
 
+    // Texto de instrucciones
+    instructionText = addText(instructions, QFont("Arial", 16));
+    instructionText->setDefaultTextColor(Qt::white);
+    instructionText->setTextWidth(600);
+    instructionText->setPos(60, 150);
 
-    // texto de instrucciones
-    QGraphicsTextItem *instructionsItem = addText(instructions, QFont("Arial", 32));
-    instructionsItem->setDefaultTextColor(Qt::white);
-    instructionsItem->setTextWidth(600);
-    instructionsItem->setPos(60, 150);
+    // Botón
+    QPushButton *btn = new QPushButton("Comenzar");
+    btn->setFixedSize(200, 50);
 
-    QGraphicsTextItem * clickText = addText("Haz click para comenzar", QFont("Arial", 18, QFont::Bold));
-    clickText->setDefaultTextColor(Qt::yellow);
-    clickText->setPos(200, 750);
+    QGraphicsProxyWidget *proxy = addWidget(btn);
+    proxy->setPos(width() / 2 - 100, height() - 150);
 
-
-    addRect(sceneRect(), Qt::NoPen, QBrush(Qt::black));
-}
-
-void InstructionScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    Q_UNUSED(event)
-    if (startCallback)
-        startCallback();
+    QObject::connect(btn, &QPushButton::clicked, [onStart]()
+                     {
+        if (onStart) onStart(); });
 }
