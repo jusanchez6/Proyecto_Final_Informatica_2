@@ -33,6 +33,7 @@ void GameController::showInstructions(int level)
 
     }
     else if (level == 2) {
+        Level1Scene::stopMusic();
         title = "Nivel 2- Asesinato de Gaitan";
         text = "El 9 de abril de 1948, Colombia quedó marcada para siempre. Ese día, en pleno centro de Bogotá, fue asesinado Jorge Eliécer Gaitán, una de las figuras políticas más queridas y esperanzadoras del país. La noticia corrió como fuego por las calles y, en cuestión de minutos, la ciudad estalló en caos. Edificios incendiados, comercios saqueados y multitudes fuera de control transformaron la capital en un escenario de confusión y violencia.\n\n"
        "En esta historia tú eres un joven atrapado en medio de los disturbios. No tienes armas, pero cuentas con un símbolo poderoso: el símbolo de la paz. Con él podrás repeler a los revoltosos y abrirte paso entre la multitud. Tu misión no es combatir, sino sobrevivir sin contribuir a la destrucción que consume la ciudad.\n\n"
@@ -40,6 +41,7 @@ void GameController::showInstructions(int level)
 
     }
     else if (level == 3) {
+        Level2Scene::stopMusic();
         title = "Nivel 3";
         text = "El 11 de septiembre de 2001, el mundo presenció uno de los eventos más impactantes de la historia moderna. Aviones comerciales desviados de sus rutas fueron utilizados como armas, y el cielo, que solía ser símbolo de seguridad y libertad, se convirtió en un espacio de incertidumbre y peligro. En cuestión de horas, millones de vidas fueron alteradas para siempre.\n\n"
        "En esta historia tú eres un controlador aéreo que, en medio del caos, debe desviar aeronaves potencialmente comprometidas lejos de zonas de riesgo. Tus decisiones son inmediatas, tensas y cruciales. Un error puede tener consecuencias inimaginables.\n\n"
@@ -94,6 +96,7 @@ void GameController::startLevel(int level)
 
 void GameController::showEnding()
 {
+    Level3Scene::stopMusic();
     auto *end = new InstructionScene(
         "¡Felicidades!",
         "Has completado todos los niveles.\nHaz clic para volver al menú.",

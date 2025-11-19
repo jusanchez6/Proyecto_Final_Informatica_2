@@ -7,6 +7,9 @@
 #include <QTimer>
 #include <QKeyEvent>
 #include <QElapsedTimer>
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
+
 #include "Player.hpp"
 #include "DogAgent.hpp"
 #include "Physics.hpp"
@@ -19,6 +22,7 @@ class Level1Scene : public QGraphicsScene
 public:
     explicit Level1Scene(QObject *parent = nullptr);
     void setView(QGraphicsView *view); // nuevo método
+    static void stopMusic();
 signals:
     void levelCompleted();
 
@@ -47,6 +51,9 @@ private:
     QGraphicsRectItem *damageFlash;
 
     QList<QGraphicsItem *> colliders;
+
+    static QMediaPlayer *musicPlayer;
+    static QMediaPlaylist * playlist;
 };
 
 #endif

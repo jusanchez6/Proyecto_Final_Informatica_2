@@ -11,6 +11,9 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
 #include <QKeyEvent>
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
+
 
 #include "Plane.hpp"
 
@@ -24,6 +27,8 @@ public:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
+
+    static void stopMusic();
 
 signals:
     void levelCompleted();
@@ -53,6 +58,9 @@ private:
     void spawnSafeZones();
 
     void endLevel(const QString &reason);
+
+    static QMediaPlayer *musicPlayer;
+    static QMediaPlaylist * playlist;
 
     float m_time; // seconds
 };

@@ -2,6 +2,9 @@
 #include <QGraphicsView>
 #include <QDebug>
 
+QMediaPlayer *Level1Scene::musicPlayer = nullptr;
+QMediaPlaylist *Level1Scene::playlist = nullptr;
+
 Level1Scene::Level1Scene(QObject *parent)
     : QGraphicsScene(parent), timeLeft(100)
 {
@@ -128,6 +131,19 @@ Level1Scene::Level1Scene(QObject *parent)
     connect(&countdown, &QTimer::timeout, this, &Level1Scene::updateTimer);
     gameLoop.start(16);
     countdown.start(1000);
+
+
+    //music
+    if (!musicPlayer) {
+        playlist = new QMediaPlaylist();
+        playlist->addMedia(QUrl::fromLocalFile("/home/julian-sanchez/Univerisdad/Informatica 2/Proyecto_Final_Informatica_2/ProyectoFinal_Juego/assets/sounds/level_1.wav"));
+        playlist->setPlaybackMode(QMediaPlaylist::Loop);
+
+        musicPlayer = new QMediaPlayer();
+        musicPlayer->setPlaylist(playlist);
+        musicPlayer->setVolume(30);
+        musicPlayer->play();
+    }
 }
 
 void Level1Scene::updateScene()
@@ -244,16 +260,28 @@ void Level1Scene::updateTimer()
     if (timeLeft <= 0)
     {
         timerText->setDefaultTextColor(Qt::red);
-        timerText->setPlainText("⏰ ¡Tiempo agotado!");
+        timerText->setPlainText("¡Tiempo agotado!");
         gameLoop.stop();
         countdown.stop();
     }
 }
 
-// 🚀 NUEVO: importante para que las teclas funcionen
 void Level1Scene::setView(QGraphicsView *view)
 {
     view->setFocusPolicy(Qt::StrongFocus); // Permite que el view capture teclas
     view->setScene(this);
     player->setFocus(); // Da el foco al jugador dentro de la escena
+}
+
+
+void Level1Scene::stopMusic()
+{
+    if (musicPlayer) {
+        musicPlayer->stop();
+        delete musicPlayer;
+        musicPlayer = nullptr;
+
+        delete playlist;
+        playlist = nullptr;
+    }
 }

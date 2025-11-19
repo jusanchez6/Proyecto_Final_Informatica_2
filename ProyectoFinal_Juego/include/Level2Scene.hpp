@@ -10,6 +10,8 @@
 #include <QHash>
 #include <QGraphicsView>
 #include <QElapsedTimer>
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
 
 
 #include "Player.hpp"
@@ -37,6 +39,8 @@ public:
 
     void setView(QGraphicsView *view);
     void shootBullet();
+
+    static void stopMusic();
 
 signals:
     void levelCompleted();
@@ -89,4 +93,8 @@ private:
 
     // Balas del jugador
     QList<QGraphicsPixmapItem *> bullets;
+
+    // musica
+    static QMediaPlayer *musicPlayer;
+    static QMediaPlaylist * playlist;
 };

@@ -4,6 +4,9 @@
 #include <QDebug>
 #include <QtMath>
 
+QMediaPlayer *Level2Scene::musicPlayer = nullptr;
+QMediaPlaylist *Level2Scene::playlist = nullptr;
+
 Level2Scene::Level2Scene(QObject *parent)
     : QGraphicsScene(parent),
       timeLeft(60),
@@ -62,6 +65,19 @@ Level2Scene::Level2Scene(QObject *parent)
     // enemigos
     connect(&enemyTimer, &QTimer::timeout, this, &Level2Scene::spawnEnemy);
     enemyTimer.start(2500);
+
+    // musica
+    if (!musicPlayer)
+    {
+        playlist = new QMediaPlaylist();
+        playlist->addMedia(QUrl::fromLocalFile("/home/julian-sanchez/Univerisdad/Informatica 2/Proyecto_Final_Informatica_2/ProyectoFinal_Juego/assets/sounds/level_2.wav"));
+        playlist->setPlaybackMode(QMediaPlaylist::Loop);
+
+        musicPlayer = new QMediaPlayer();
+        musicPlayer->setPlaylist(playlist);
+        musicPlayer->setVolume(20);
+        musicPlayer->play();
+    }
 
     gameLoop.start(16);
     spawnTimer.start(1500);
@@ -149,7 +165,7 @@ void Level2Scene::updateScene()
                                    });
 
                 // restar la vida y actualizar el HUD
-                playerLives = std::max(0, playerLives -1);
+                playerLives = std::max(0, playerLives - 1);
                 livesText->setPlainText(QString("❤️").repeated(playerLives));
 
                 // Agrega un segundo de penalización
@@ -242,7 +258,7 @@ void Level2Scene::updateScene()
                                    });
 
                 // restar la vida y actualizar el HUD
-                playerLives = std::max(0, playerLives -1);
+                playerLives = std::max(0, playerLives - 1);
                 livesText->setPlainText(QString("❤️").repeated(playerLives));
 
                 // Agrega un segundo de penalización
@@ -336,7 +352,7 @@ void Level2Scene::updateTimer()
     if (timeLeft <= 0)
     {
         timerText->setDefaultTextColor(Qt::green);
-        timerText->setPlainText("✅ ¡Nivel superado!");
+        timerText->setPlainText("¡Nivel superado!");
         gameLoop.stop();
         spawnTimer.stop();
         countdown.stop();
@@ -349,4 +365,16 @@ void Level2Scene::setView(QGraphicsView *view)
     view->setFocusPolicy(Qt::StrongFocus); // Permite que el view capture teclas
     view->setScene(this);
     player->setFocus(); // Da el foco al jugador dentro de la escena
+}
+
+void Level2Scene::stopMusic()
+{
+    if (musicPlayer) {
+        musicPlayer->stop();
+        delete musicPlayer;
+        musicPlayer = nullptr;
+
+        delete playlist;
+        playlist = nullptr;
+    }
 }
