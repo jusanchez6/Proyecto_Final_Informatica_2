@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QCoreApplication>
+
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>

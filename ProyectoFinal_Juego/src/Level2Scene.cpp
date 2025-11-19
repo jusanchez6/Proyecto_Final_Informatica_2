@@ -9,13 +9,13 @@ QMediaPlaylist *Level2Scene::playlist = nullptr;
 
 Level2Scene::Level2Scene(QObject *parent)
     : QGraphicsScene(parent),
-      timeLeft(60),
+      timeLeft(10),
       t(0.0f)
 {
 
     setSceneRect(0, 0, 736, 841);
 
-    QPixmap bg("../assets/backgrounds/Bg_level2.jpg");
+    QPixmap bg(":/assets/backgrounds/Bg_level2.jpg");
 
     if (!bg.isNull())
     {
@@ -70,8 +70,10 @@ Level2Scene::Level2Scene(QObject *parent)
     if (!musicPlayer)
     {
         playlist = new QMediaPlaylist();
-        playlist->addMedia(QUrl::fromLocalFile("/home/julian-sanchez/Univerisdad/Informatica 2/Proyecto_Final_Informatica_2/ProyectoFinal_Juego/assets/sounds/level_2.wav"));
-        playlist->setPlaybackMode(QMediaPlaylist::Loop);
+        QString base = QCoreApplication::applicationDirPath();
+        QString soundPath = base + "/resources/music/level_2.wav";
+
+        playlist->addMedia(QUrl::fromLocalFile(soundPath));playlist->setPlaybackMode(QMediaPlaylist::Loop);
 
         musicPlayer = new QMediaPlayer();
         musicPlayer->setPlaylist(playlist);
@@ -293,7 +295,7 @@ void Level2Scene::updateScene()
 
 void Level2Scene::shootBullet()
 {
-    auto *bullet = addPixmap(QPixmap("../assets/sprites/bullet.png").scaled(32, 32));
+    auto *bullet = addPixmap(QPixmap(":/assets/sprites/bullet.png").scaled(32, 32));
     bullet->setPos(player->x() + player->boundingRect().width() / 2,
                    player->y() + player->boundingRect().height() / 2);
 
@@ -303,7 +305,7 @@ void Level2Scene::shootBullet()
 
 void Level2Scene::spawnRock()
 {
-    auto *rock = addPixmap(QPixmap("../assets/sprites/Level2_rock.png").scaled(32, 32));
+    auto *rock = addPixmap(QPixmap(":/assets/sprites/Level2_rock.png").scaled(32, 32));
     float x = QRandomGenerator::global()->bounded(200, 780);
     rock->setPos(x, 0);
 
@@ -323,7 +325,7 @@ void Level2Scene::spawnRock()
 
 void Level2Scene::spawnEnemy()
 {
-    AnimatedSprite *enemy = new AnimatedSprite("../assets/sprites/enemigo.png", 3, 4);
+    AnimatedSprite *enemy = new AnimatedSprite(":/assets/sprites/enemigo.png", 3, 4);
 
     // Elegir lado aleatoriamente (0 = izquierda, 1 = derecha)
     bool fromLeft = QRandomGenerator::global()->bounded(2) == 0;

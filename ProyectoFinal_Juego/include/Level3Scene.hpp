@@ -1,6 +1,8 @@
 #ifndef LEVEL3SCENE_HPP
 #define LEVEL3SCENE_HPP
 
+#include <QCoreApplication>
+
 #include <QGraphicsScene>
 #include <QGraphicsTextItem>
 #include <QTimer>

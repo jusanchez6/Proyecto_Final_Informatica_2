@@ -1,6 +1,8 @@
 #ifndef MENUSCENE_HPP
 #define MENUSCENE_HPP
 
+#include <QCoreApplication>
+
 #include <QGraphicsScene>
 #include <QGraphicsTextItem>
 #include <QGraphicsPathItem>

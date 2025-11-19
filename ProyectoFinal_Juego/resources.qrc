@@ -1,20 +1,19 @@
 <RCC>
-    <qresource prefix="/assets">
-
-        <!-- BACKGROUNDS -->
+    <qresource prefix="/">
+        <!-- Backgrounds -->
         <file>assets/backgrounds/Bg_level1.jpg</file>
         <file>assets/backgrounds/Bg_level2.jpg</file>
         <file>assets/backgrounds/Bg_level3.png</file>
         <file>assets/backgrounds/menu_bg.png</file>
 
-        <!-- SOUNDS -->
+        <!-- Sounds -->
         <file>assets/sounds/Menu.wav</file>
         <file>assets/sounds/dog_bark.wav</file>
         <file>assets/sounds/level_1.wav</file>
         <file>assets/sounds/level_2.wav</file>
         <file>assets/sounds/level_3.wav</file>
 
-        <!-- SPRITES -->
+        <!-- Sprites -->
         <file>assets/sprites/Level1_dog.png</file>
         <file>assets/sprites/Level1_smoke.png</file>
         <file>assets/sprites/Level2_rock.png</file>
@@ -24,6 +23,5 @@
         <file>assets/sprites/enemigo.png</file>
         <file>assets/sprites/personaje_1.png</file>
         <file>assets/sprites/personaje_2.png</file>
-
     </qresource>
 </RCC>
