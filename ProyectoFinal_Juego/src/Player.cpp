@@ -2,9 +2,9 @@
 
 Player::Player(int level)
     : AnimatedSprite((
-          level == 1 ? "../assets/sprites/personaje_1.png"
-          : level == 2 ? "../assets/sprites/personaje_2.png"
-                       : "../assets/sprites/personaje_1.png")), 
+          level == 1 ? ":/assets/sprites/personaje_1.png"
+          : level == 2 ? ":/assets/sprites/personaje_2.png"
+                       : ":/assets/sprites/personaje_1.png")), 
       velocity(0, 0), moving(false)
 {
     setCharacterIndex(0);

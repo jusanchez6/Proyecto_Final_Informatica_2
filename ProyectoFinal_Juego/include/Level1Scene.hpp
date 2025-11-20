@@ -1,6 +1,8 @@
 #ifndef LEVEL1SCENE_HPP
 #define LEVEL1SCENE_HPP
 
+#include <QCoreApplication>
+
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>

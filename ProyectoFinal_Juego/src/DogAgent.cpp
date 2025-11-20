@@ -1,7 +1,7 @@
 #include <DogAgent.hpp>
 
 DogAgent::DogAgent()
-    : AnimatedSprite("../assets/sprites/Level1_dog.png", 3, 4),
+    : AnimatedSprite(":/assets/sprites/Level1_dog.png", 3, 4),
       dangerNearby(false)
 {
     setAnimationRow(0); // primera fila del spritesheet
@@ -10,7 +10,7 @@ DogAgent::DogAgent()
     setZValue(10);
     setPos(150, 320);
 
-    barkSound.setSource(QUrl::fromLocalFile("../assets/sounds/dog_bark.wav"));
+    barkSound.setSource(QUrl::fromLocalFile(":/assets/sounds/dog_bark.wav"));
     barkSound.setVolume(0.7f);
 }
 
@@ -20,7 +20,7 @@ void DogAgent::perceive(const QList<QGraphicsPixmapItem *> &fires, const QPointF
     Q_UNUSED(fires); // ya no se usan los fuegos
     dangerNearby = false;
 
-    // 📍 Distancia al refugio
+    // Distancia al refugio
     QPointF refugeCenter = refuge->boundingRect().center() + refuge->pos();
     if (QLineF(pos(), refugeCenter).length() < 250)
     {
@@ -28,7 +28,7 @@ void DogAgent::perceive(const QList<QGraphicsPixmapItem *> &fires, const QPointF
         dangerNearby = true; // ladrar cerca del refugio
     }
 
-    // 🧭 Movimiento: sigue al jugador normalmente
+    // Movimiento: sigue al jugador normalmente
     if (!dangerNearby)
     {
         target = playerPos;
@@ -86,7 +86,7 @@ void DogAgent::act()
 
     if (dangerNearby)
     {
-        qDebug() << "🐕 Ladrando: ¡Refugio detectado!";
+        qDebug() << "Ladrando: ¡Refugio detectado!";
 
         if (barkSound.isLoaded() && barkSound.isPlaying() == false)
         {

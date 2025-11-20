@@ -3,13 +3,12 @@
 QMediaPlayer *MenuScene::musicPlayer = nullptr;
 QMediaPlaylist *MenuScene::playlist = nullptr;
 
-
 MenuScene::MenuScene(std::function<void()> startCallback, QObject *parent)
     : QGraphicsScene(parent), m_startCallback(startCallback)
 {
     setSceneRect(0, 0, 736, 841);
 
-    QPixmap bg("../assets/backgrounds/menu_bg.png");
+    QPixmap bg(":/assets/backgrounds/menu_bg.png");
     if (!bg.isNull())
     {
         QGraphicsPixmapItem *bgItem = addPixmap(bg.scaled(736, 841));
@@ -30,9 +29,13 @@ MenuScene::MenuScene(std::function<void()> startCallback, QObject *parent)
     btnText->setDefaultTextColor(Qt::white);
     btnText->setPos(300, 565);
 
-    if (!musicPlayer) {
+    if (!musicPlayer)
+    {
         playlist = new QMediaPlaylist();
-        playlist->addMedia(QUrl::fromLocalFile("/home/julian-sanchez/Univerisdad/Informatica 2/Proyecto_Final_Informatica_2/ProyectoFinal_Juego/assets/sounds/Menu.wav"));
+        QString base = QCoreApplication::applicationDirPath();
+        QString soundPath = base + "/resources/music/Menu.wav";
+
+        playlist->addMedia(QUrl::fromLocalFile(soundPath));
         playlist->setPlaybackMode(QMediaPlaylist::Loop);
 
         musicPlayer = new QMediaPlayer();
@@ -63,7 +66,8 @@ void MenuScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void MenuScene::stopMusic()
 {
-    if (musicPlayer) {
+    if (musicPlayer)
+    {
         musicPlayer->stop();
         delete musicPlayer;
         musicPlayer = nullptr;

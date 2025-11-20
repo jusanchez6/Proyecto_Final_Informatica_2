@@ -11,7 +11,7 @@ Level1Scene::Level1Scene(QObject *parent)
 
     setSceneRect(0, 0, 736, 841);
 
-    QPixmap bg("../assets/backgrounds/Bg_level1.jpg");
+    QPixmap bg(":/assets/backgrounds/Bg_level1.jpg");
 
     if (!bg.isNull())
     {
@@ -75,7 +75,7 @@ Level1Scene::Level1Scene(QObject *parent)
 
     for (const QPointF &pos : firePositions)
     {
-        AnimatedSprite *fire = new AnimatedSprite("../assets/sprites/Level_fire.png", 4, 4);
+        AnimatedSprite *fire = new AnimatedSprite(":/assets/sprites/Level_fire.png", 4, 4);
         fire->setAnimationRow(0);
         fire->setScale(1.5);
         fire->start(270);
@@ -96,12 +96,12 @@ Level1Scene::Level1Scene(QObject *parent)
     QRectF chosenArea = refugePositions[randomIndex];
 
     // Crea un rectángulo negro como refugio
-    refuge = addRect(chosenArea, QPen(Qt::NoPen), QBrush(Qt::black));
+    refuge = addRect(chosenArea, QPen(Qt::NoPen), QBrush(Qt::transparent));
     refuge->setZValue(5);
 
 
     // Humo oscilante
-    smoke = addPixmap(QPixmap("../assets/sprites/Level1_fire.png").scaled(32, 32));
+    smoke = addPixmap(QPixmap(":/assets/sprites/Level1_fire.png").scaled(32, 32));
     smoke->setOpacity(0.3);
     smoke->setPos(400, 150);
 
@@ -136,8 +136,10 @@ Level1Scene::Level1Scene(QObject *parent)
     //music
     if (!musicPlayer) {
         playlist = new QMediaPlaylist();
-        playlist->addMedia(QUrl::fromLocalFile("/home/julian-sanchez/Univerisdad/Informatica 2/Proyecto_Final_Informatica_2/ProyectoFinal_Juego/assets/sounds/level_1.wav"));
-        playlist->setPlaybackMode(QMediaPlaylist::Loop);
+        QString base = QCoreApplication::applicationDirPath();
+        QString soundPath = base + "/resources/music/level_1.wav";
+
+        playlist->addMedia(QUrl::fromLocalFile(soundPath));playlist->setPlaybackMode(QMediaPlaylist::Loop);
 
         musicPlayer = new QMediaPlayer();
         musicPlayer->setPlaylist(playlist);
@@ -168,13 +170,13 @@ void Level1Scene::updateScene()
     }
 
     // Física 3: movimiento inercial del perro
-    QPointF followTarget = player->pos() + QPointF(0, 90); // 👈 más abajito (aumenta el 40 si quieres más distancia)
+    QPointF followTarget = player->pos() + QPointF(0, 90); // más abajito (aumenta el 40 si quieres más distancia)
 
     dog->perceive(fires, player->pos(), refuge);
 
     QPointF newDogPos = Physics::dampedFollow(
         dog->pos(),
-        followTarget, // 👈 el nuevo target está debajo del jugador
+        followTarget, 
         0.05f);
 
     dog->setPos(newDogPos);
