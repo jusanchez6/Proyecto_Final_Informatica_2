@@ -3,8 +3,6 @@
 QMediaPlayer *Level3Scene::musicPlayer = nullptr;
 QMediaPlaylist *Level3Scene::playlist = nullptr;
 
-
-
 Level3Scene::Level3Scene(QObject *parent)
     : QGraphicsScene(parent), m_selected(nullptr), m_dragLine(nullptr), m_time(0.0f)
 {
@@ -22,20 +20,19 @@ Level3Scene::Level3Scene(QObject *parent)
         qWarning() << "No se pudo cargar el fondo.";
     }
 
-
-
     // hint text
     m_hintText = addText("Nivel 3 - Control Aéreo: click y arrastra para fijar rumbo", QFont("Arial", 12));
     m_hintText->setDefaultTextColor(Qt::white);
     m_hintText->setPos(10, 10);
 
-
-    if (!musicPlayer) {
+    if (!musicPlayer)
+    {
         playlist = new QMediaPlaylist();
         QString base = QCoreApplication::applicationDirPath();
         QString soundPath = base + "/resources/music/level_3.wav";
 
-        playlist->addMedia(QUrl::fromLocalFile(soundPath));playlist->setPlaybackMode(QMediaPlaylist::Loop);
+        playlist->addMedia(QUrl::fromLocalFile(soundPath));
+        playlist->setPlaybackMode(QMediaPlaylist::Loop);
 
         musicPlayer = new QMediaPlayer();
         musicPlayer->setPlaylist(playlist);
@@ -60,7 +57,7 @@ Level3Scene::Level3Scene(QObject *parent)
 
 void Level3Scene::spawnPlanes()
 {
-    for (int i = 0; i < 2; ++i)
+    for (int i = 0; i < 7; ++i)
     {
         QPixmap pix(":/assets/sprites/Level3_plane2.png");
         if (pix.isNull())
@@ -347,16 +344,19 @@ void Level3Scene::spawnSafeZones()
     }
 }
 
-void Level3Scene::endLevel(const QString &reason)
+void Level3Scene::endLevel(const QString &reason, bool success)
 {
     m_gameLoop.stop();
     m_dangerTimer.stop();
 
-    QGraphicsTextItem *gameOver = addText(reason, QFont("Arial", 24, QFont::Bold));
-    gameOver->setDefaultTextColor(Qt::red);
-    gameOver->setPos(width() / 2 - 200, height() / 2 - 50);
+    QGraphicsTextItem *msg = addText(reason, QFont("Arial", 24, QFont::Bold));
+    msg->setDefaultTextColor(success ? Qt::green : Qt::red);
+    msg->setPos(width() / 2 - 200, height() / 2 - 50);
 
-    emit levelCompleted(); // si querés enlazar con el siguiente nivel
+    if (success)
+        emit levelCompleted();
+    else
+        emit levelFailed(reason);
 }
 
 void Level3Scene::updateScene()
@@ -392,7 +392,7 @@ void Level3Scene::updateScene()
             pos.y() < 0 || pos.y() > bounds.height())
         {
             qDebug() << "Avión salió del mapa!";
-            endLevel("¡Un avión salió del espacio aéreo!");
+            endLevel("¡Un avión salió del espacio aéreo!", false);
             return;
         }
     }
@@ -405,7 +405,7 @@ void Level3Scene::updateScene()
             if (m_planes[i]->collidesWithItem(m_planes[j]))
             {
                 qDebug() << "Colisión entre aviones!";
-                endLevel("¡Dos aviones colisionaron!");
+                endLevel("¡Dos aviones colisionaron!", false);
                 return;
             }
         }
@@ -419,7 +419,7 @@ void Level3Scene::updateScene()
             if (plane->collidesWithItem(zone))
             {
                 qDebug() << "Avión entró a zona peligrosa!";
-                endLevel("¡Un avión entró a una zona peligrosa!");
+                endLevel("¡Un avión entró a una zona peligrosa!", false);
                 return;
             }
         }
@@ -460,15 +460,15 @@ void Level3Scene::updateScene()
     // Si todos los aviones fueron rescatados, termina el nivel
     if (m_planes.isEmpty())
     {
-        endLevel("¡Todos los aviones llegaron a zonas seguras!");
+        endLevel("¡Todos los aviones llegaron a zonas seguras!", true);
         return;
     }
 }
 
-
 void Level3Scene::stopMusic()
 {
-    if (musicPlayer) {
+    if (musicPlayer)
+    {
         musicPlayer->stop();
         delete musicPlayer;
         musicPlayer = nullptr;

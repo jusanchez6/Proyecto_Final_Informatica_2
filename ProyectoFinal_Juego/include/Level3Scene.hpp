@@ -34,6 +34,7 @@ public:
 
 signals:
     void levelCompleted();
+    void levelFailed(const QString &reason);
 
 private slots:
     void updateScene();
@@ -59,7 +60,7 @@ private:
     void spawnDangerZones();
     void spawnSafeZones();
 
-    void endLevel(const QString &reason);
+    void endLevel(const QString &reason, bool success);
 
     static QMediaPlayer *musicPlayer;
     static QMediaPlaylist * playlist;

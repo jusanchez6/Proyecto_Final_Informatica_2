@@ -9,13 +9,20 @@ QMediaPlaylist *Level2Scene::playlist = nullptr;
 
 Level2Scene::Level2Scene(QObject *parent)
     : QGraphicsScene(parent),
-      timeLeft(10),
+      timeLeft(30),
       t(0.0f)
 {
 
     setSceneRect(0, 0, 736, 841);
 
+#ifdef _WIN32
+    QPixmap bg(":/assets/backgrounds/Bg_level2.jpg"); //------> la ruta en windows
+
+#elif defined(__linux__)
     QPixmap bg(":/assets/backgrounds/Bg_level2.jpg");
+
+    
+#endif
 
     if (!bg.isNull())
     {
@@ -73,7 +80,8 @@ Level2Scene::Level2Scene(QObject *parent)
         QString base = QCoreApplication::applicationDirPath();
         QString soundPath = base + "/resources/music/level_2.wav";
 
-        playlist->addMedia(QUrl::fromLocalFile(soundPath));playlist->setPlaybackMode(QMediaPlaylist::Loop);
+        playlist->addMedia(QUrl::fromLocalFile(soundPath));
+        playlist->setPlaybackMode(QMediaPlaylist::Loop);
 
         musicPlayer = new QMediaPlayer();
         musicPlayer->setPlaylist(playlist);
@@ -371,7 +379,8 @@ void Level2Scene::setView(QGraphicsView *view)
 
 void Level2Scene::stopMusic()
 {
-    if (musicPlayer) {
+    if (musicPlayer)
+    {
         musicPlayer->stop();
         delete musicPlayer;
         musicPlayer = nullptr;
