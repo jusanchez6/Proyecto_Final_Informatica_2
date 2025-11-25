@@ -8,7 +8,12 @@ Level3Scene::Level3Scene(QObject *parent)
 {
     setSceneRect(0, 0, 736, 841);
     setBackgroundBrush(Qt::black);
+#ifdef _WIN32
     QPixmap bg(":/assets/backgrounds/Bg_level3.png");
+#elif defined(__linux__)
+    QPixmap bg(":/assets/backgrounds/Bg_level3.png");
+#endif
+
 
     if (!bg.isNull())
     {
@@ -28,17 +33,22 @@ Level3Scene::Level3Scene(QObject *parent)
     if (!musicPlayer)
     {
         playlist = new QMediaPlaylist();
-        QString base = QCoreApplication::applicationDirPath();
-        QString soundPath = base + "/resources/music/level_3.wav";
 
-        playlist->addMedia(QUrl::fromLocalFile(soundPath));
+#ifdef _WIN32
+        QUrl level3Url("qrc:/assets/sounds/level_3.wav");
+#elif defined(__linux__)
+        QUrl level3Url("qrc:/assets/sounds/level_3.wav");
+#endif
+
+        playlist->addMedia(level3Url);
         playlist->setPlaybackMode(QMediaPlaylist::Loop);
 
         musicPlayer = new QMediaPlayer();
         musicPlayer->setPlaylist(playlist);
-        musicPlayer->setVolume(40);
+        musicPlayer->setVolume(20);
         musicPlayer->play();
     }
+
 
     // spawn some planes
     spawnPlanes();
@@ -59,7 +69,12 @@ void Level3Scene::spawnPlanes()
 {
     for (int i = 0; i < 7; ++i)
     {
+#ifdef _WIN32
         QPixmap pix(":/assets/sprites/Level3_plane2.png");
+#elif defined(__linux__)
+        QPixmap pix(":/assets/sprites/Level3_plane2.png");
+#endif
+
         if (pix.isNull())
             pix = QPixmap(32, 32);
         pix = pix.scaled(32, 32);

@@ -8,7 +8,12 @@ MenuScene::MenuScene(std::function<void()> startCallback, QObject *parent)
 {
     setSceneRect(0, 0, 736, 841);
 
-    QPixmap bg(":/assets/backgrounds/menu_bg.png");
+#ifdef _WIN32
+    QPixmap bg(":/assets/backgrounds/menu_bg.png");   // Windows
+#elif defined(__linux__)
+    QPixmap bg(":/assets/backgrounds/menu_bg.png");   // Linux
+#endif
+
     if (!bg.isNull())
     {
         QGraphicsPixmapItem *bgItem = addPixmap(bg.scaled(736, 841));
@@ -32,10 +37,14 @@ MenuScene::MenuScene(std::function<void()> startCallback, QObject *parent)
     if (!musicPlayer)
     {
         playlist = new QMediaPlaylist();
-        QString base = QCoreApplication::applicationDirPath();
-        QString soundPath = base + "/resources/music/Menu.wav";
 
-        playlist->addMedia(QUrl::fromLocalFile(soundPath));
+#ifdef _WIN32
+        QUrl menuUrl("qrc:/assets/sounds/Menu.wav");
+#elif defined(__linux__)
+        QUrl menuUrl("qrc:/assets/sounds/Menu.wav");
+#endif
+
+        playlist->addMedia(menuUrl);
         playlist->setPlaybackMode(QMediaPlaylist::Loop);
 
         musicPlayer = new QMediaPlayer();
@@ -43,6 +52,7 @@ MenuScene::MenuScene(std::function<void()> startCallback, QObject *parent)
         musicPlayer->setVolume(40);
         musicPlayer->play();
     }
+
 }
 
 void MenuScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
