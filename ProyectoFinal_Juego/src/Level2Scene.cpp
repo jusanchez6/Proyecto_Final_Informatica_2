@@ -77,10 +77,14 @@ Level2Scene::Level2Scene(QObject *parent)
     if (!musicPlayer)
     {
         playlist = new QMediaPlaylist();
-        QString base = QCoreApplication::applicationDirPath();
-        QString soundPath = base + "/resources/music/level_2.wav";
 
-        playlist->addMedia(QUrl::fromLocalFile(soundPath));
+#ifdef _WIN32
+        QUrl level2Url("qrc:/assets/sounds/level_2.wav");   // Windows
+#elif defined(__linux__)
+        QUrl level2Url("qrc:/assets/sounds/level_2.wav");   // Linux
+#endif
+
+        playlist->addMedia(level2Url);
         playlist->setPlaybackMode(QMediaPlaylist::Loop);
 
         musicPlayer = new QMediaPlayer();
@@ -303,7 +307,11 @@ void Level2Scene::updateScene()
 
 void Level2Scene::shootBullet()
 {
+#ifdef _WIN32
     auto *bullet = addPixmap(QPixmap(":/assets/sprites/bullet.png").scaled(32, 32));
+#elif defined(__linux__)
+    auto *bullet = addPixmap(QPixmap(":/assets/sprites/bullet.png").scaled(32, 32));
+#endif
     bullet->setPos(player->x() + player->boundingRect().width() / 2,
                    player->y() + player->boundingRect().height() / 2);
 
@@ -313,7 +321,11 @@ void Level2Scene::shootBullet()
 
 void Level2Scene::spawnRock()
 {
+#ifdef _WIN32
     auto *rock = addPixmap(QPixmap(":/assets/sprites/Level2_rock.png").scaled(32, 32));
+#elif defined(__linux__)
+    auto *rock = addPixmap(QPixmap(":/assets/sprites/Level2_rock.png").scaled(32, 32));
+#endif
     float x = QRandomGenerator::global()->bounded(200, 780);
     rock->setPos(x, 0);
 
@@ -333,7 +345,11 @@ void Level2Scene::spawnRock()
 
 void Level2Scene::spawnEnemy()
 {
+#ifdef _WIN32
     AnimatedSprite *enemy = new AnimatedSprite(":/assets/sprites/enemigo.png", 3, 4);
+#elif defined(__linux__)
+    AnimatedSprite *enemy = new AnimatedSprite(":/assets/sprites/enemigo.png", 3, 4);
+#endif
 
     // Elegir lado aleatoriamente (0 = izquierda, 1 = derecha)
     bool fromLeft = QRandomGenerator::global()->bounded(2) == 0;

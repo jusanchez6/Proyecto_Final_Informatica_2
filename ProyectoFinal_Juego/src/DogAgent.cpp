@@ -1,16 +1,25 @@
 #include <DogAgent.hpp>
 
 DogAgent::DogAgent()
+#ifdef _WIN32
     : AnimatedSprite(":/assets/sprites/Level1_dog.png", 3, 4),
-      dangerNearby(false)
+#elif defined(__linux__)
+    : AnimatedSprite(":/assets/sprites/Level1_dog.png", 3, 4),
+#endif
+    dangerNearby(false)
+
 {
     setAnimationRow(0); // primera fila del spritesheet
     scaleFactor = 1.0f;
     start(150); // animación cada 150 ms
     setZValue(10);
     setPos(150, 320);
+#ifdef _WIN32
+    barkSound.setSource(QUrl("qrc:/assets/sounds/dog_bark.wav"));
+#elif defined(__linux__)
+    barkSound.setSource(QUrl("qrc:/assets/sounds/dog_bark.wav"));
+#endif
 
-    barkSound.setSource(QUrl::fromLocalFile(":/assets/sounds/dog_bark.wav"));
     barkSound.setVolume(0.7f);
 }
 

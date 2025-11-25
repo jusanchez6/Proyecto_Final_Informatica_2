@@ -11,7 +11,12 @@ Level1Scene::Level1Scene(QObject *parent)
 
     setSceneRect(0, 0, 736, 841);
 
+#ifdef _WIN32
     QPixmap bg(":/assets/backgrounds/Bg_level1.jpg");
+#elif defined(__linux__)
+    QPixmap bg(":/assets/backgrounds/Bg_level1.jpg");
+#endif
+
 
     if (!bg.isNull())
     {
@@ -75,7 +80,12 @@ Level1Scene::Level1Scene(QObject *parent)
 
     for (const QPointF &pos : firePositions)
     {
+#ifdef _WIN32
         AnimatedSprite *fire = new AnimatedSprite(":/assets/sprites/Level_fire.png", 4, 4);
+#elif defined(__linux__)
+        AnimatedSprite *fire = new AnimatedSprite(":/assets/sprites/Level_fire.png", 4, 4);
+#endif
+
         fire->setAnimationRow(0);
         fire->setScale(1.5);
         fire->start(270);
@@ -101,7 +111,11 @@ Level1Scene::Level1Scene(QObject *parent)
 
 
     // Humo oscilante
+#ifdef _WIN32
     smoke = addPixmap(QPixmap(":/assets/sprites/Level1_fire.png").scaled(32, 32));
+#elif defined(__linux__)
+    smoke = addPixmap(QPixmap(":/assets/sprites/Level1_fire.png").scaled(32, 32));
+#endif
     smoke->setOpacity(0.3);
     smoke->setPos(400, 150);
 
@@ -136,16 +150,22 @@ Level1Scene::Level1Scene(QObject *parent)
     //music
     if (!musicPlayer) {
         playlist = new QMediaPlaylist();
-        QString base = QCoreApplication::applicationDirPath();
-        QString soundPath = base + "/resources/music/level_1.wav";
 
-        playlist->addMedia(QUrl::fromLocalFile(soundPath));playlist->setPlaybackMode(QMediaPlaylist::Loop);
+#ifdef _WIN32
+        QUrl level1Url("qrc:/assets/sounds/level_1.wav");
+#elif defined(__linux__)
+        QUrl level1Url("qrc:/assets/sounds/level_1.wav");
+#endif
+
+        playlist->addMedia(level1Url);
+        playlist->setPlaybackMode(QMediaPlaylist::Loop);
 
         musicPlayer = new QMediaPlayer();
         musicPlayer->setPlaylist(playlist);
         musicPlayer->setVolume(30);
         musicPlayer->play();
     }
+
 }
 
 void Level1Scene::updateScene()
@@ -182,7 +202,6 @@ void Level1Scene::updateScene()
     dog->setPos(newDogPos);
     dog->update(0.016f);
 
-    // 🔍 Colisiones
     for (auto *fire : fires)
     {
         if (player->collidesWithItem(fire))
