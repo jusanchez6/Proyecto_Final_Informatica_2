@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QGraphicsView>
-
+#include <QString>
 #include <Level1Scene.hpp>
 #include <Level2Scene.hpp>
 #include <Level3Scene.hpp>
@@ -20,7 +20,7 @@ public:
     void showInstructions(int level);
     void startLevel(int level);
     void showEnding();
-
+    void showGameOver(const QString &reason);
 private:
     QGraphicsView *m_view;
 

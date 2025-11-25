@@ -364,16 +364,16 @@ void Level3Scene::endLevel(const QString &reason, bool success)
     m_gameLoop.stop();
     m_dangerTimer.stop();
 
+    if (!success)
+        stopMusic();//esto soluciona el error de la musica
     QGraphicsTextItem *msg = addText(reason, QFont("Arial", 24, QFont::Bold));
     msg->setDefaultTextColor(success ? Qt::green : Qt::red);
     msg->setPos(width() / 2 - 200, height() / 2 - 50);
-
     if (success)
         emit levelCompleted();
     else
         emit levelFailed(reason);
 }
-
 void Level3Scene::updateScene()
 {
     float dt = 0.016f;
