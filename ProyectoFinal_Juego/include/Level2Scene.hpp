@@ -14,7 +14,7 @@
 #include <QElapsedTimer>
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
-
+#include <QString>
 
 #include "Player.hpp"
 #include "Physics.hpp"
@@ -46,7 +46,7 @@ public:
 
 signals:
     void levelCompleted();
-
+    void levelFailed(const QString &reason);
 private slots:
     void updateScene();
     void spawnRock();

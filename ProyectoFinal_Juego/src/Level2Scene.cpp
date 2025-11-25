@@ -185,15 +185,18 @@ void Level2Scene::updateScene()
                 // Agrega un segundo de penalización
                 timeLeft = std::max(0, timeLeft + 1);
                 timerText->setPlainText(QString("Tiempo: %1").arg(timeLeft));
-
                 if (playerLives == 0)
                 {
                     timerText->setDefaultTextColor(Qt::red);
                     timerText->setPlainText("¡Has perdido todas tus vidas!");
                     gameLoop.stop();
+                    spawnTimer.stop();
                     countdown.stop();
+                    stopMusic();
+                    emit levelFailed("Perdiste todas tus vidas en el Nivel 2");
                     return;
                 }
+
             }
         }
     }
