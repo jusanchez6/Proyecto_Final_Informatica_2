@@ -236,8 +236,11 @@ void Level1Scene::updateScene()
                     timerText->setPlainText("¡Has perdido todas tus vidas!");
                     gameLoop.stop();
                     countdown.stop();
+                    stopMusic();  // detiene la música del nivel 1
+                    emit levelFailed("Perdiste todas tus vidas en el Nivel 1");
                     return;
                 }
+
             }
         }
     }
@@ -277,14 +280,16 @@ void Level1Scene::updateTimer()
 {
     timeLeft--;
     timerText->setPlainText(QString("Tiempo: %1").arg(timeLeft));
-
     if (timeLeft <= 0)
     {
         timerText->setDefaultTextColor(Qt::red);
         timerText->setPlainText("¡Tiempo agotado!");
         gameLoop.stop();
         countdown.stop();
+        stopMusic();
+        emit levelFailed("Se acabó el tiempo en el Nivel 1");
     }
+
 }
 
 void Level1Scene::setView(QGraphicsView *view)

@@ -2,7 +2,7 @@
 #define LEVEL1SCENE_HPP
 
 #include <QCoreApplication>
-
+#include <QString>
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
@@ -27,6 +27,7 @@ public:
     static void stopMusic();
 signals:
     void levelCompleted();
+    void levelFailed(const QString &reason);
 
 private slots:
     void updateScene();
