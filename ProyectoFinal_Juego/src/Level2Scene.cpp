@@ -284,11 +284,14 @@ void Level2Scene::updateScene()
 
                 if (playerLives == 0)
                 {
-                    timerText->setDefaultTextColor(Qt::red);
-                    timerText->setPlainText("¡Has perdido todas tus vidas!");
                     gameLoop.stop();
+                    spawnTimer.stop();
+                    enemyTimer.stop();
                     countdown.stop();
+                    stopMusic();
+                    emit levelFailed("Perdiste todas tus vidas en el Nivel 2");
                     return;
+
                 }
             }
         }

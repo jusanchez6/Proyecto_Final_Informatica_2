@@ -6,7 +6,7 @@ QMediaPlayer *Level1Scene::musicPlayer = nullptr;
 QMediaPlaylist *Level1Scene::playlist = nullptr;
 
 Level1Scene::Level1Scene(QObject *parent)
-    : QGraphicsScene(parent), timeLeft(100)
+    : QGraphicsScene(parent), timeLeft(30)
 {
 
     setSceneRect(0, 0, 736, 841);
