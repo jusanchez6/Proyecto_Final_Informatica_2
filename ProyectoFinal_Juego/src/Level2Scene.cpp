@@ -169,11 +169,11 @@ void Level2Scene::updateScene()
             {
                 invulnerable = true;
                 damageTimer.restart();
-                QTimer::singleShot(1000, [this]()
+                QTimer::singleShot(1000,this, [this]()
                                    { invulnerable = false; });
 
                 damageFlash->setBrush(QColor(255, 0, 0, 100)); // flash rojo
-                QTimer::singleShot(150, [this]()
+                QTimer::singleShot(150,this, [this]()
                                    {
                                        damageFlash->setBrush(QColor(255, 0, 0, 0)); // desaparece
                                    });
@@ -265,11 +265,11 @@ void Level2Scene::updateScene()
             {
                 invulnerable = true;
                 damageTimer.restart();
-                QTimer::singleShot(1000, [this]()
+                QTimer::singleShot(1000,this, [this]()
                                    { invulnerable = false; });
 
                 damageFlash->setBrush(QColor(255, 0, 0, 100)); // flash rojo
-                QTimer::singleShot(150, [this]()
+                QTimer::singleShot(150,this, [this]()
                                    {
                                        damageFlash->setBrush(QColor(255, 0, 0, 0)); // desaparece
                                    });

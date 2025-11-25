@@ -37,8 +37,8 @@ private:
     Player *player;
     DogAgent *dog;
     QList<QGraphicsPixmapItem *> fires;
-    QGraphicsPixmapItem *smoke;
-    QGraphicsItem *refuge;
+    QGraphicsPixmapItem *smoke=nullptr;
+    QGraphicsItem *refuge=nullptr;
 
     QTimer gameLoop;
     QTimer countdown;
