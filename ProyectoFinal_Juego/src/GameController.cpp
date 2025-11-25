@@ -57,11 +57,7 @@ void GameController::showInstructions(int level)
 }
 void GameController::startLevel(int level)
 {
-
-    
-
     if (level == 1) {
-        
         auto *lvl = new Level1Scene();
         lvl->setView(m_view);
         m_view->setScene(lvl);
@@ -70,9 +66,14 @@ void GameController::startLevel(int level)
             lvl->deleteLater();
             this->showInstructions(2);
         });
-    }
 
-    if (level == 2) {
+        QObject::connect(lvl, &Level1Scene::levelFailed,
+                         [this, lvl](const QString &reason) {
+                             lvl->deleteLater();
+                             this->showGameOver(reason);
+                         });
+    }
+    else if (level == 2) {
         auto *lvl = new Level2Scene();
         lvl->setView(m_view);
         m_view->setScene(lvl);
@@ -81,9 +82,14 @@ void GameController::startLevel(int level)
             lvl->deleteLater();
             this->showInstructions(3);
         });
-    }
 
-    if (level == 3) {
+        QObject::connect(lvl, &Level2Scene::levelFailed,
+                         [this, lvl](const QString &reason) {
+                             lvl->deleteLater();
+                             this->showGameOver(reason);
+                         });
+    }
+    else if (level == 3) {
         auto *lvl = new Level3Scene();
         m_view->setScene(lvl);
 
@@ -91,6 +97,12 @@ void GameController::startLevel(int level)
             lvl->deleteLater();
             this->showEnding();
         });
+
+        QObject::connect(lvl, &Level3Scene::levelFailed,
+                         [this, lvl](const QString &reason) {
+                             lvl->deleteLater();
+                             this->showGameOver(reason);
+                         });
     }
 }
 
@@ -105,4 +117,16 @@ void GameController::showEnding()
         });
 
     m_view->setScene(end);
+}
+
+void GameController::showGameOver(const QString &reason)
+{
+    auto *inst = new InstructionScene(
+        "Has perdido",
+        reason + "\n\nHaz clic para volver al menú.",
+        [this]() {
+            this->showMenu();
+        });
+
+    m_view->setScene(inst);
 }
