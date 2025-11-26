@@ -116,7 +116,8 @@ Level1Scene::Level1Scene(QObject *parent)
 #elif defined(__linux__)
     smoke = addPixmap(QPixmap(":/assets/sprites/Level_fire.png").scaled(32, 32));
 #endif
-    smoke->setOpacity(0.3);
+    smoke->setOpacity(0.8);
+      smoke->setZValue(10);
     smoke->setPos(400, 150);
 
     // Texto del tiempo
