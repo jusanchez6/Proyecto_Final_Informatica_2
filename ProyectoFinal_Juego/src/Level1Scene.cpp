@@ -295,7 +295,7 @@ void Level1Scene::updateTimer()
 
 void Level1Scene::setView(QGraphicsView *view)
 {
-    view->setFocusPolicy(Qt::StrongFocus); // Permite que el view capture teclas
+    view->setFocusPolicy(Qt::StrongFocus);//esto es para capturar las teclas que el usaurio ingrese
     view->setScene(this);
     player->setFocus(); // Da el foco al jugador dentro de la escena
 }
