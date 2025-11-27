@@ -9,12 +9,11 @@ AnimatedSprite::AnimatedSprite(const QString &path, int columns, int rows, QObje
       rows(rows),
       currentFrame(0),
       currentRow(0),
-      scaleFactor(1.0) // Ajusta según necesites (2x tamaño original)
-
+      scaleFactor(1.0)
 {
     if (sheet.isNull())
     {
-        qWarning() << "No se pudo cargar el spritesheet:" << path;
+        qWarning() << "no se pudo cargar el spritesheet:" << path;
         return;
     }
 
@@ -22,9 +21,7 @@ AnimatedSprite::AnimatedSprite(const QString &path, int columns, int rows, QObje
     frameHeight = sheet.height() / rows;
 
     characterOffset = QPoint(0, 0);
-
-    // Establece el primer frame
-    setPixmap(sheet.copy(0, 0, frameWidth, frameHeight));
+    setPixmap(sheet.copy(0, 0, frameWidth, frameHeight));//los primeros fragmes
     setTransformOriginPoint(frameWidth / 2, frameHeight / 2);
 
     connect(&timer, &QTimer::timeout, this, &AnimatedSprite::updateFrame);
