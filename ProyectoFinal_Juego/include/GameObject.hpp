@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QGraphicsPixmapItem>
-
 class GameObject : public QObject, public QGraphicsPixmapItem {
     Q_OBJECT  
 public:

@@ -9,13 +9,11 @@
 #include <Level3Scene.hpp>
 #include <MenuScene.hpp>
 #include <InstructionScene.hpp>
-
 class GameController : public QObject
 {
     Q_OBJECT
 public:
     GameController();
-
     void showMenu();
     void showInstructions(int level);
     void startLevel(int level);

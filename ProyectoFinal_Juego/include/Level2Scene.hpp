@@ -15,7 +15,6 @@
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
 #include <QString>
-
 #include "Player.hpp"
 #include "Physics.hpp"
 #include "AnimatedSprite.hpp"
