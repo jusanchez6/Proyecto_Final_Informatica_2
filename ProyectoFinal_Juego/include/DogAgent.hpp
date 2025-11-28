@@ -20,7 +20,7 @@ public:
 private:
     QPointF target;
     QPointF velocity;
-    QList<QPointF> memory; // Zonas de fuego recordadas
+    QList<QPointF> memory;//la parte donde sale el fuego en el nivel 1
     bool dangerNearby;
 
     QPointF lastDir;

@@ -16,10 +16,8 @@ AnimatedSprite::AnimatedSprite(const QString &path, int columns, int rows, QObje
         qWarning() << "no se pudo cargar el spritesheet:" << path;
         return;
     }
-
     frameWidth = sheet.width() / cols;
     frameHeight = sheet.height() / rows;
-
     characterOffset = QPoint(0, 0);
     setPixmap(sheet.copy(0, 0, frameWidth, frameHeight));//los primeros fragmes
     setTransformOriginPoint(frameWidth / 2, frameHeight / 2);
@@ -54,7 +52,7 @@ void AnimatedSprite::setCharacterIndex(int index)
 
     characterOffset = QPoint(charX, charY);
 }
-
+//esto esta pensado en la parte de los sprites
 void AnimatedSprite::updateFrame()
 {
     if (sheet.isNull())

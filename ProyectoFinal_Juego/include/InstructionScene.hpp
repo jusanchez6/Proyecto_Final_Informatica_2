@@ -5,11 +5,9 @@
 #include <QGraphicsTextItem>
 #include <QPushButton>
 #include <functional>
-
 class InstructionScene : public QGraphicsScene
 {
     Q_OBJECT
-
 public:
     InstructionScene(const QString &title,
                      const QString &instructions,
