@@ -8,8 +8,8 @@ Player::Player(int level)
       velocity(0, 0), moving(false)
 {
     setCharacterIndex(0);
-    setAnimationRow(0); // mira hacia abajo por defecto
-    scaleFactor = 1.0f; // ajusta el tamaño general
+    setAnimationRow(0);
+    scaleFactor = 1.0f;//ajusta la camara
     start(120);
     setFlag(QGraphicsItem::ItemIsFocusable);
     setFocus();
@@ -23,19 +23,19 @@ void Player::keyPressEvent(QKeyEvent *event)
     {
     case Qt::Key_W:
         velocity.setY(-3);
-        setAnimationRow(3); // fila 3 = arriba
+        setAnimationRow(3);//arriba
         break;
     case Qt::Key_S:
         velocity.setY(3);
-        setAnimationRow(0); // fila 0 = abajo
+        setAnimationRow(0);//abajo
         break;
     case Qt::Key_A:
         velocity.setX(-3);
-        setAnimationRow(1); // fila 1 = izquierda
+        setAnimationRow(1);//izquierda
         break;
     case Qt::Key_D:
         velocity.setX(3);
-        setAnimationRow(2); // fila 2 = derecha
+        setAnimationRow(2);//derecha
         break;
     default:
         break;
@@ -61,7 +61,7 @@ void Player::advance(int phase)
         QRectF bounds = scene()->sceneRect();
         QRectF spriteRect = boundingRect().translated(pos());
 
-        // Ajustar posición si se sale
+        //por si se sale
         QPointF p = pos();
         if (spriteRect.left() < bounds.left())
             p.setX(bounds.left());
