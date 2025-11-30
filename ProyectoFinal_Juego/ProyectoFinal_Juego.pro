@@ -6,7 +6,6 @@ CONFIG += c++17
 
 SOURCES += \
     src/main.cpp \
-    src/GameObject.cpp \
     src/Level1Scene.cpp \
     src/Player.cpp \
     src/DogAgent.cpp \
@@ -20,7 +19,6 @@ SOURCES += \
     src/GameController.cpp
 
 HEADERS += \
-    include/GameObject.hpp \
     include/Level1Scene.hpp \
     include/Player.hpp \
     include/DogAgent.hpp \
