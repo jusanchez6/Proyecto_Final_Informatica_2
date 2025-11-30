@@ -1,3 +1,15 @@
+/**
+ * @file Player.hpp
+ * @brief Implementación de la clase del jugador principal
+ * @authors John Tristancho
+ *          Julian Sanchez
+ * 
+ * @date 29/11/2025
+ * @version 1.0
+ */
+
+
+
 #include "Player.hpp"
 
 Player::Player(int level)

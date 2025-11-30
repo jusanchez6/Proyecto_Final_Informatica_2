@@ -1,7 +1,17 @@
-#pragma once
+/**
+ * @file Level2Scene.hpp
+ * @brief Escena del segundo nivel del juego
+ * @authors John Tristancho
+ *          Julian Sanchez
+ *
+ * @date 29/11/2025
+ * @version 1.0
+ */
+
+#ifndef LEVEL2SCENE_HPP
+#define LEVEL2SCENE_HPP
 
 #include <QCoreApplication>
-
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
@@ -19,83 +29,131 @@
 #include "Physics.hpp"
 #include "AnimatedSprite.hpp"
 
-
+/**
+ * @brief Datos de proyectiles en movimiento parabólico
+ */
 struct ProjectileData
 {
-    QPointF origin;
-    QPointF velocity;
-    float t;
-    float gravity;
+    QPointF origin;   ///< Punto de origen del proyectil
+    QPointF velocity; ///< Velocidad inicial del proyectil
+    float t;          ///< Tiempo transcurrido
+    float gravity;    ///< Gravedad aplicada
 };
 
+/**
+ * @brief Escena del segundo nivel del juego
+ *
+ * Nivel con mecánicas de plataformas, enemigos y proyectiles
+ */
 class Level2Scene : public QGraphicsScene
 {
     Q_OBJECT
 
 public:
+    /**
+     * @brief Constructor de la escena del nivel 2
+     * @param parent Objeto padre
+     */
     explicit Level2Scene(QObject *parent = nullptr);
 
+    /**
+     * @brief Maneja eventos de teclas presionadas
+     * @param event Evento de tecla
+     */
     void keyPressEvent(QKeyEvent *event) override;
+
+    /**
+     * @brief Maneja eventos de teclas liberadas
+     * @param event Evento de tecla
+     */
     void keyReleaseEvent(QKeyEvent *event) override;
 
+    /**
+     * @brief Establece la vista gráfica para la escena
+     * @param view Vista gráfica a establecer
+     */
     void setView(QGraphicsView *view);
+
+    /**
+     * @brief Dispara una bala desde el jugador
+     */
     void shootBullet();
 
+    /**
+     * @brief Detiene la música del nivel
+     */
     static void stopMusic();
 
 signals:
+    /**
+     * @brief Señal emitida cuando se completa el nivel
+     */
     void levelCompleted();
+
+    /**
+     * @brief Señal emitida cuando falla el nivel
+     * @param reason Razón del fallo
+     */
     void levelFailed(const QString &reason);
+
 private slots:
+    /**
+     * @brief Actualiza el estado de la escena
+     */
     void updateScene();
+
+    /**
+     * @brief Genera una nueva roca en el nivel
+     */
     void spawnRock();
+
+    /**
+     * @brief Actualiza el temporizador del nivel
+     */
     void updateTimer();
+
+    /**
+     * @brief Genera un nuevo enemigo en el nivel
+     */
     void spawnEnemy();
 
 private:
-    // Jugador
-    Player *player = nullptr;
-    float playerVelocityX = 0.0f;
-    float playerVelocityY = 0.0f;
-    const float gravity = 0.3f;
-    const float moveSpeed = 3.0f;
-    const float jumpStrength = 10.0f;
-    bool onGround = true;
-    int playerDirection = 1; // 1 = derecha, -1 = izquierda
+    Player *player;                   ///< Jugador principal
+    float playerVelocityX = 0.0f;     ///< Velocidad horizontal del jugador
+    float playerVelocityY = 0.0f;     ///< Velocidad vertical del jugador
+    const float gravity = 0.3f;       ///< Gravedad del nivel
+    const float moveSpeed = 3.0f;     ///< Velocidad de movimiento
+    const float jumpStrength = 10.0f; ///< Fuerza de salto
+    bool onGround = true;             ///< Indica si el jugador está en el suelo
+    int playerDirection = 1;          ///< Dirección del jugador
 
-    // ⏱Timers
-    QTimer gameLoop;
-    QTimer spawnTimer;
-    QTimer countdown;
-    QTimer enemyTimer;
+    QTimer gameLoop;   ///< Timer del bucle principal
+    QTimer spawnTimer; ///< Timer de generación de rocas
+    QTimer countdown;  ///< Timer de cuenta regresiva
+    QTimer enemyTimer; ///< Timer de generación de enemigos
 
-    // Física
-    float groundLevel = 680.0f;
-    float t = 0.0f; // tiempo acumulado para trayectorias parabólicas
+    float groundLevel = 680.f; ///< Nivel del suelo
+    float t = 0.0f;            ///< Tiempo acumulado para trayectorias
 
-    // HUD
-    QGraphicsTextItem *timerText = nullptr;
-    int timeLeft = 0;
+    QGraphicsTextItem *timerText; ///< Texto del temporizador
+    int timeLeft = 0;             ///< Tiempo restante
 
-    int playerLives;
+    int playerLives;                ///< Vidas del jugador
+    bool invulnerable;              ///< Estado de invulnerabilidad
+    QElapsedTimer damageTimer;      ///< Timer de daño
+    QGraphicsTextItem *livesText;   ///< Texto de vidas
+    QGraphicsRectItem *damageFlash; ///< Efecto visual de daño
 
-    bool invulnerable;
-    QElapsedTimer damageTimer;
-    QGraphicsTextItem *livesText;
-    QGraphicsRectItem *damageFlash;
+    QList<QGraphicsPixmapItem *> projectiles;                    ///< Lista de proyectiles
+    QHash<QGraphicsPixmapItem *, ProjectileData> projectileData; ///< Datos de proyectiles
 
-    // Proyectiles (rocas que caen)
-    QList<QGraphicsPixmapItem *> projectiles;
-    QHash<QGraphicsPixmapItem *, ProjectileData> projectileData;
+    QList<AnimatedSprite *> enemies; ///< Lista de enemigos
+    uint velEnemy = -2;              ///< Velocidad de enemigos
 
-    // Enemigos animados
-    QList<AnimatedSprite *> enemies;
-    uint velEnemy = -2;
+    QList<QGraphicsPixmapItem *> bullets; ///< Lista de balas del jugador
 
-    // Balas del jugador
-    QList<QGraphicsPixmapItem *> bullets;
-
-    // musica
-    static QMediaPlayer *musicPlayer;
-    static QMediaPlaylist * playlist;
+    static QMediaPlayer *musicPlayer; ///< Reproductor de música
+    static QMediaPlaylist *playlist;  ///< Lista de reproducción
 };
+
+#endif

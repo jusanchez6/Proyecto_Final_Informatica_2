@@ -1,3 +1,12 @@
+/**
+ * @file Plane.hpp
+ * @brief Implementación de la clase para aviones en el juego
+ * @authors John Tristancho
+ *          Julian Sanchez
+ * 
+ * @date 29/11/2025
+ * @version 1.0
+ */
 #include <Plane.hpp>
 
 Plane::Plane(const QPixmap &pix, const QPointF &pos, const QPointF &velocity)

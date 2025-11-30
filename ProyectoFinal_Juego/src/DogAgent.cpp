@@ -1,3 +1,14 @@
+/**
+ * @file DogAgent.cpp
+ * @brief Implementación de la clase para el agente canino inteligente en el juego
+ * @authors John Tristancho
+ *          Julian Sanchez
+ * 
+ * @date 29/11/2025
+ * @version 1.0
+ */
+
+
 #include <DogAgent.hpp>
 
 DogAgent::DogAgent()

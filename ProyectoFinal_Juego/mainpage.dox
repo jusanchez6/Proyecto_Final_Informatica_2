@@ -1,0 +1,91 @@
+/*!
+\mainpage Documentación - Juego de Niveles con Agente Canino
+\section intro_sec Introducción
+
+Este proyecto corresponde a un **juego multinivel** desarrollado en **C++ con Qt**.  
+El sistema implementa un juego que incluye diferentes niveles con mecánicas variadas,
+desde rescate en incendios hasta control de tráfico aéreo, con la particularidad de contar
+con un **agente canino inteligente** que ayuda al jugador.
+
+\section features_sec Características Principales
+
+El juego cuenta con las siguientes características:
+- **Tres niveles diferentes** con mecánicas de juego únicas
+- **Sistema de físicas** personalizado para movimientos y proyectiles
+- **Agente canino inteligente** con comportamiento autónomo
+- **Sistema de audio** con música y efectos de sonido
+- **Interfaz gráfica** desarrollada con QGraphicsView
+- **Menús y sistema de navegación** entre niveles
+
+\section levels_sec Descripción de Niveles
+
+\subsection level1_sec Nivel 1: Rescate en Incendio
+- Jugador debe rescatar personas de un incendio
+- Agente canino ayuda detectando peligros
+- Sistema de tiempo limitado y vidas
+- Colisión con fuego reduce salud
+
+\subsection level2_sec Nivel 2: Plataformas y Enemigos
+- Jugador se mueve en plataformas con gravedad
+- Sistema de disparo contra enemigos
+- Proyectiles con trayectorias parabólicas
+- Enemigos animados con comportamiento autónomo
+
+\subsection level3_sec Nivel 3: Control de Tráfico Aéreo
+- Jugador dirige aviones para evitar colisiones
+- Sistema de predicción de trayectorias
+- Zonas de peligro y zonas seguras
+- Control mediante arrastre con mouse
+
+\section technical_sec Aspectos Técnicos
+
+\subsection architecture_sec Arquitectura
+- **GameController**: Controlador principal del juego
+- **LevelXScene**: Escenas específicas de cada nivel
+- **AnimatedSprite**: Sistema de sprites animados
+- **Physics**: Motor de físicas para movimientos
+- **Player**: Jugador principal
+- **DogAgent**: Agente canino inteligente
+
+\subsection algorithms_sec Algoritmos Implementados
+- **Movimiento parabólico** para proyectiles
+- **Detección de colisiones** entre objetos
+- **Pathfinding** para el agente canino
+- **Predicción de trayectorias** para aviones
+- **Sistema de aprendizaje** por refuerzo para el perro
+
+\section authors_sec Información de los Autores
+- **Autores**: John Tristancho, Julian Sanchez
+- **Fecha**: 29/11/2025
+- **Versión**: 1.0
+
+\section usage_sec Uso del Programa
+1. Compilar el proyecto con **Qt 5.15+**
+2. Ejecutar el archivo binario resultante
+3. Navegar por los menús usando el mouse
+4. Seguir las instrucciones de cada nivel
+5. Completar los objetivos para avanzar
+
+\subsection controls_sec Controles
+- **Teclas WASD/Flechas**: Movimiento del jugador
+- **Mouse**: Interacción en menús y nivel 3
+- **Espacio**: Salto (nivel 2) y acciones especiales
+- **Click izquierdo**: Selección e interacción
+
+\section notes_sec Notas de Desarrollo
+- Desarrollado en **C++17** con **Qt Framework**
+- Utiliza **QGraphicsView** para el renderizado
+- Implementa **patrones de diseño** como Observer y State
+- Código documentado con **Doxygen** para mantenibilidad
+- Sistema de sonido con **QMediaPlayer**
+
+\section file_structure_sec Estructura de Archivos
+- \ref GameController.hpp "GameController.hpp": Controlador principal
+- \ref Level1Scene.hpp "Level1Scene.hpp": Escena del nivel 1
+- \ref Level2Scene.hpp "Level2Scene.hpp": Escena del nivel 2  
+- \ref Level3Scene.hpp "Level3Scene.hpp": Escena del nivel 3
+- \ref Player.hpp "Player.hpp": Clase del jugador
+- \ref DogAgent.hpp "DogAgent.hpp": Agente canino inteligente
+- \ref AnimatedSprite.hpp "AnimatedSprite.hpp": Sistema de animación
+- \ref Physics.hpp "Physics.hpp": Motor de físicas
+*/

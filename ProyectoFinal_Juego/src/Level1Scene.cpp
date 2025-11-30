@@ -1,3 +1,13 @@
+/**
+ * @file Level1Scene.cpp
+ * @brief Escena del primer nivel del juego
+ * @authors John Tristancho
+ *          Julian Sanchez
+ * 
+ * @date 29/11/2025
+ * @version 1.0
+ */
+
 #include <Level1Scene.hpp>
 #include <QGraphicsView>
 #include <QDebug>

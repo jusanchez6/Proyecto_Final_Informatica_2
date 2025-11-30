@@ -1,3 +1,13 @@
+/**
+ * @file MenuScene.hpp
+ * @brief Implementación de la escena del menú principal del juego
+ * @authors John Tristancho
+ *          Julian Sanchez
+ * 
+ * @date 29/11/2025
+ * @version 1.0
+ */
+
 #include <MenuScene.hpp>
 
 QMediaPlayer *MenuScene::musicPlayer = nullptr;

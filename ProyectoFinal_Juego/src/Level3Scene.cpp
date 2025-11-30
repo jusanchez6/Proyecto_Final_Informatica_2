@@ -1,3 +1,13 @@
+/**
+ * @file Level3Scene.cpp
+ * @brief Implementación de la escena del tercer nivel del juego
+ * @authors John Tristancho
+ *          Julian Sanchez
+ * 
+ * @date 29/11/2025
+ * @version 1.0
+ */
+
 #include <Level3Scene.hpp>
 
 QMediaPlayer *Level3Scene::musicPlayer = nullptr;

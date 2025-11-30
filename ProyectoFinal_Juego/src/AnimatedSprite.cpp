@@ -1,3 +1,13 @@
+/**
+ * @file AnimatedSprite.cpp
+ * @brief Implementación de la clase para manejar sprites animados a partir de spritesheets
+ * @authors John Tristancho
+ *          Julian Sanchez
+ *
+ * @date 29/11/2025
+ * @version 1.0
+ */
+
 #include "AnimatedSprite.hpp"
 #include <QDebug>
 

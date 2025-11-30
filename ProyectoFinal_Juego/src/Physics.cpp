@@ -1,3 +1,13 @@
+/**
+ * @file Physics.hpp
+ * @brief Implementaciones de las utilidades de física para el juego
+ * @authors John Tristancho
+ *          Julian Sanchez
+ * 
+ * @date 29/11/2025
+ * @version 1.0
+ */
+
 #include "Physics.hpp"
 
 // Movimiento oscilatorio vertical (humo)

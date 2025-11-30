@@ -1,3 +1,13 @@
+/**
+ * @file Level2Scene.cpp
+ * @brief Escena del segundo nivel del juego
+ * @authors John Tristancho
+ *          Julian Sanchez
+ *
+ * @date 29/11/2025
+ * @version 1.0
+ */
+
 #include "Level2Scene.hpp"
 #include <QRandomGenerator>
 #include <QGraphicsView>
