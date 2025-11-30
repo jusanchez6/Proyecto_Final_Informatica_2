@@ -122,12 +122,13 @@ Level1Scene::Level1Scene(QObject *parent)
 
     // Humo oscilante
 #ifdef _WIN32
-    smoke = addPixmap(QPixmap(":/assets/sprites/Level_fire.png").scaled(32, 32));
+    smoke = addPixmap(QPixmap(":/assets/sprites/Level1_smoke.png").scaled(32, 32));
 #elif defined(__linux__)
-    smoke = addPixmap(QPixmap(":/assets/sprites/Level_fire.png").scaled(32, 32));
+    smoke = addPixmap(QPixmap(":/assets/sprites/Level1_smoke.png").scaled(32, 32));
 #endif
+
     smoke->setOpacity(0.8);
-      smoke->setZValue(10);
+    smoke->setZValue(10);
     smoke->setPos(400, 150);
 
     // Texto del tiempo

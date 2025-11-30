@@ -10,7 +10,6 @@
 
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
-#include "GameObject.hpp"
 #include <AnimatedSprite.hpp>
 #include <QKeyEvent>
 #include <QGraphicsScene>
