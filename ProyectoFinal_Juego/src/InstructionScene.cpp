@@ -1,3 +1,13 @@
+/**
+ * @file InstructionScene.cpp
+ * @brief Escena de instrucciones del juego
+ * @authors John Tristancho
+ *          Julian Sanchez
+ * 
+ * @date 29/11/2025
+ * @version 1.0
+ */
+
 #include <InstructionScene.hpp>
 #include <QGraphicsProxyWidget>
 #include <QFont>

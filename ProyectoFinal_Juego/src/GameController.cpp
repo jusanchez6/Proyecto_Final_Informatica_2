@@ -1,3 +1,13 @@
+/**
+ * @file GameController.cpp
+ * @brief Implementación controlador principal del juego
+ * @authors John Tristancho
+ *          Julian Sanchez
+ * 
+ * @date 29/11/2025
+ * @version 1.0
+ */
+
 #include <GameController.hpp>
 
 GameController::GameController()
