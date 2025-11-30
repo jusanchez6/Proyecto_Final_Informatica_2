@@ -80,6 +80,7 @@ private:
     Player *player;                     ///< Jugador principal
     DogAgent *dog;                      ///< Agente canino
     QList<QGraphicsPixmapItem *> fires; ///< Lista de fuegos en el nivel
+    QList<QGraphicsPixmapItem *> smokes;
     QGraphicsPixmapItem *smoke;         ///< Humo del nivel
     QGraphicsItem *refuge;              ///< Refugio seguro
     QTimer gameLoop;                    ///< Timer del bucle principal

@@ -3,7 +3,7 @@
  * @brief Escena del primer nivel del juego
  * @authors John Tristancho
  *          Julian Sanchez
- * 
+ *
  * @date 29/11/2025
  * @version 1.0
  */
@@ -27,7 +27,6 @@ Level1Scene::Level1Scene(QObject *parent)
     QPixmap bg(":/assets/backgrounds/Bg_level1.jpg");
 #endif
 
-
     if (!bg.isNull())
     {
         QGraphicsPixmapItem *background = addPixmap(bg.scaled(736, 841));
@@ -39,32 +38,53 @@ Level1Scene::Level1Scene(QObject *parent)
     }
 
     QList<QRectF> blockedZones = {
-                                  QRectF(104, 5, 228, 57),
-                                  QRectF(321, 102, 92, 60),
-                                  QRectF(550, 13, 54, 43),
-                                  QRectF(635, 49, 69, 73),
-                                  QRectF(434, 228, 46, 56),
-                                  QRectF(470, 315, 34, 79),
-                                  QRectF(686, 233, 18, 86),
-                                  QRectF(12, 245, 169, 60),
-                                  QRectF(214, 309, 25, 62),
-                                  QRectF(270, 343, 46, 40),
-                                  QRectF(261, 458, 68, 60),
-                                  QRectF(174, 524, 218, 41),
-                                  QRectF(211, 592, 86, 20),
-                                  QRectF(435, 741, 73, 52),
-                                  QRectF(673, 478, 41, 155),
-                                  QRectF(2, 672, 87, 143),
-                                  QRectF(2, 6, 23, 233),
-                                  QRectF(8, 344, 29, 317)};
+        QRectF(104, 5, 228, 57),
+        QRectF(321, 102, 92, 60),
+        QRectF(550, 13, 54, 43),
+        QRectF(635, 49, 69, 73),
+        QRectF(434, 228, 46, 56),
+        QRectF(470, 315, 34, 79),
+        QRectF(686, 233, 18, 86),
+        QRectF(12, 245, 169, 60),
+        QRectF(214, 309, 25, 62),
+        QRectF(270, 343, 46, 40),
+        QRectF(261, 458, 68, 60),
+        QRectF(174, 524, 218, 41),
+        QRectF(211, 592, 86, 20),
+        QRectF(435, 741, 73, 52),
+        QRectF(673, 478, 41, 155),
+        QRectF(2, 672, 87, 143),
+        QRectF(2, 6, 23, 233),
+        QRectF(8, 344, 29, 317)};
 
     // Guarda estos rectángulos en una lista global
     for (const QRectF &r : blockedZones)
     {
+        // Crear colisionador
         QGraphicsRectItem *block = addRect(r, QPen(Qt::NoPen), QBrush(Qt::transparent));
-        block->setData(0, "blocked"); // marcador para detección
+        block->setData(0, "blocked");
         block->setZValue(5);
         colliders.append(block);
+
+#ifdef _WIN32
+        QPixmap smokePx(":/assets/sprites/Level1_smoke.png");
+        smokePx = smokePx.scaled(32, 32, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        QGraphicsPixmapItem *smoke = addPixmap(smokePx);
+#elif defined(__linux__)
+        QPixmap smokePx(":/assets/sprites/Level1_smoke.png");
+        smokePx = smokePx.scaled(32, 32, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        QGraphicsPixmapItem *smoke = addPixmap(smokePx);
+#endif
+
+        smoke->setOpacity(0.8);
+        smoke->setZValue(10);
+
+        // Posicionar el humo en el centro del rectángulo bloqueado
+        QPointF center = r.center();
+        smoke->setPos(center.x() - smokePx.width() / 2,
+                      center.y() - smokePx.height() / 2);
+
+        smokes.append(smoke);
     }
 
     // Jugador
@@ -80,13 +100,13 @@ Level1Scene::Level1Scene(QObject *parent)
 
     // Obstáculos de fuego
     QList<QPointF> firePositions = {
-                                    // QPointF(67, 431),
-                                    QPointF(412, 43),
-                                    QPointF(479, 130),
-                                    QPointF(531, 196),
-                                    QPointF(615, 412),
-                                    QPointF(490, 554),
-                                    QPointF(164, 761)};
+        // QPointF(67, 431),
+        QPointF(412, 43),
+        QPointF(479, 130),
+        QPointF(531, 196),
+        QPointF(615, 412),
+        QPointF(490, 554),
+        QPointF(164, 761)};
 
     for (const QPointF &pos : firePositions)
     {
@@ -107,9 +127,9 @@ Level1Scene::Level1Scene(QObject *parent)
 
     // Refugio
     QList<QRectF> refugePositions = {
-                                     QRectF(401, 14, 60, 49),
-                                     QRectF(70, 435, 75, 27),
-                                     QRectF(666, 783, 64, 56)};
+        QRectF(401, 14, 60, 49),
+        QRectF(70, 435, 75, 27),
+        QRectF(666, 783, 64, 56)};
 
     // Selecciona un refugio aleatorio
     int randomIndex = QRandomGenerator::global()->bounded(refugePositions.size());
@@ -119,17 +139,7 @@ Level1Scene::Level1Scene(QObject *parent)
     refuge = addRect(chosenArea, QPen(Qt::NoPen), QBrush(Qt::transparent));
     refuge->setZValue(5);
 
-
     // Humo oscilante
-#ifdef _WIN32
-    smoke = addPixmap(QPixmap(":/assets/sprites/Level1_smoke.png").scaled(32, 32));
-#elif defined(__linux__)
-    smoke = addPixmap(QPixmap(":/assets/sprites/Level1_smoke.png").scaled(32, 32));
-#endif
-
-    smoke->setOpacity(0.8);
-    smoke->setZValue(10);
-    smoke->setPos(400, 150);
 
     // Texto del tiempo
     timerText = addText("Tiempo: 30", QFont("Arial", 16));
@@ -158,9 +168,9 @@ Level1Scene::Level1Scene(QObject *parent)
     gameLoop.start(16);
     countdown.start(1000);
 
-
-    //music
-    if (!musicPlayer) {
+    // music
+    if (!musicPlayer)
+    {
         playlist = new QMediaPlaylist();
 
 #ifdef _WIN32
@@ -177,7 +187,6 @@ Level1Scene::Level1Scene(QObject *parent)
         musicPlayer->setVolume(30);
         musicPlayer->play();
     }
-
 }
 
 void Level1Scene::updateScene()
@@ -189,9 +198,12 @@ void Level1Scene::updateScene()
     t += 0.1f;
 
     // Física 1: movimiento oscilatorio del humo
-    QPointF smokeOrigin(400, 150);
-    QPointF newPos = Physics::oscillatory(t, 10.0f, 2.0f, smokeOrigin);
-    smoke->setPos(newPos);
+    for (QGraphicsPixmapItem *smoke : smokes)
+    {
+        QPointF smokeOrigin(400, 150);
+        QPointF newPos = Physics::oscillatory(t, 10.0f, 2.0f, smokeOrigin);
+        smoke->setPos(newPos);
+    }
 
     // Física 2: vibración leve del fuego
     for (auto *fire : fires)
@@ -223,12 +235,12 @@ void Level1Scene::updateScene()
                 invulnerable = true;
                 damageTimer.restart();
 
-                QTimer::singleShot(1000,this, [this]()
+                QTimer::singleShot(1000, this, [this]()
                                    { invulnerable = false; });
 
                 // Efecto visual de daño
                 damageFlash->setBrush(QColor(255, 0, 0, 100)); // flash rojo
-                QTimer::singleShot(150,this, [this]()
+                QTimer::singleShot(150, this, [this]()
                                    {
                                        damageFlash->setBrush(QColor(255, 0, 0, 0)); // desaparece
                                    });
@@ -248,11 +260,10 @@ void Level1Scene::updateScene()
                     timerText->setPlainText("¡Has perdido todas tus vidas!");
                     gameLoop.stop();
                     countdown.stop();
-                    stopMusic();  // detiene la música del nivel 1
+                    stopMusic(); // detiene la música del nivel 1
                     emit levelFailed("Perdiste todas tus vidas en el Nivel 1");
                     return;
                 }
-
             }
         }
     }
@@ -301,20 +312,19 @@ void Level1Scene::updateTimer()
         stopMusic();
         emit levelFailed("Se acabó el tiempo en el Nivel 1");
     }
-
 }
 
 void Level1Scene::setView(QGraphicsView *view)
 {
-    view->setFocusPolicy(Qt::StrongFocus);//esto es para capturar las teclas que el usaurio ingrese
+    view->setFocusPolicy(Qt::StrongFocus); // esto es para capturar las teclas que el usaurio ingrese
     view->setScene(this);
     player->setFocus(); // Da el foco al jugador dentro de la escena
 }
 
-
 void Level1Scene::stopMusic()
 {
-    if (musicPlayer) {
+    if (musicPlayer)
+    {
         musicPlayer->stop();
         delete musicPlayer;
         musicPlayer = nullptr;
