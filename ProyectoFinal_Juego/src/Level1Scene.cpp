@@ -68,7 +68,7 @@ Level1Scene::Level1Scene(QObject *parent)
 
 #ifdef _WIN32
         QPixmap smokePx(":/assets/sprites/Level1_smoke.png");
-        smokePx = smokePx.scaled(32, 32, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        smokePx = smokePx.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         QGraphicsPixmapItem *smoke = addPixmap(smokePx);
 #elif defined(__linux__)
         QPixmap smokePx(":/assets/sprites/Level1_smoke.png");
@@ -200,8 +200,8 @@ void Level1Scene::updateScene()
     // Física 1: movimiento oscilatorio del humo
     for (QGraphicsPixmapItem *smoke : smokes)
     {
-        QPointF smokeOrigin(400, 150);
-        QPointF newPos = Physics::oscillatory(t, 10.0f, 2.0f, smokeOrigin);
+        QPointF origin = smoke->pos();
+        QPointF newPos = Physics::oscillatory(t, 3.0f, 0.5f, origin);
         smoke->setPos(newPos);
     }
 
