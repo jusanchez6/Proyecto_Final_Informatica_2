@@ -201,7 +201,7 @@ void Level1Scene::updateScene()
     for (QGraphicsPixmapItem *smoke : smokes)
     {
         QPointF origin = smoke->pos();
-        QPointF newPos = Physics::oscillatory(t, 3.0f, 0.5f, origin);
+        QPointF newPos = Physics::oscillatory(t, 1.5f, 1.5f, origin);
         smoke->setPos(newPos);
     }
 
